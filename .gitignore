@@ -9,3 +9,6 @@ test.js
 test.txt
 jobboard-server/.env
 jobboard-server/node_modules
+ecommerce/
+video/
+video/remotion/

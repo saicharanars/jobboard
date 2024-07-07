@@ -9,16 +9,19 @@ import {
 import { Button } from "../ui/button";
 import { useContext } from "react";
 import AuthContext from "@/lib/context/auth";
+import { useRouter } from "next/navigation";
 
 const Dropdown = () => {
   const { logout } = useContext(AuthContext);
+  const router = useRouter()
 
   const logouthandler = () => {
     logout();
+    router.push("/auth")
   };
 
   return (
-    <div className="xs:hidden md:block">
+    <div className="hidden md:block">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="h-8 w-8 overflow-hidden rounded-full cursor-pointer">

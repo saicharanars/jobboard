@@ -6,4 +6,5 @@ export class UserDto {
   @Exclude()
   password: string;
   mobile_number: number;
+  role: string;
 }

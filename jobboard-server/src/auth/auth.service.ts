@@ -29,7 +29,7 @@ export class AuthService {
       const user = { ...rest, email, password: hashedpassword };
 
       const userResult = await this.entityManager.save(User, user);
-      console.log(userResult, '>>>>>');
+      console.log(user, '>>>>>');
       return {
         user: plainToClass(UserDto, userResult),
         message: 'signup succesfull',
@@ -54,7 +54,7 @@ export class AuthService {
         const payload = {
           id: checkUser.id,
           username: checkUser.name,
-          role: 'job_candiatate',
+          role: checkUser.role,
         };
         return {
           access_token: await this.jwtService.signAsync(payload),

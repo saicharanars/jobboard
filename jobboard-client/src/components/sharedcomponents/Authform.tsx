@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,33 +26,8 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-const signupSchema = z.object({
-  name: z.string().min(3, {
-    message: "Username must be at least 3 characters.",
-  }),
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(6, {
-      message: "Password must be at least 6 characters.",
-    })
-    .max(20, {
-      message: "Password must not be more than 20 characters.",
-    }),
-  mobile_number: z.coerce.number(),
-});
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(6, {
-      message: "Password must be at least 6 characters.",
-    })
-    .max(20, {
-      message: "Password must not be more than 20 characters.",
-    }),
-});
+import { signupSchema, loginSchema, signup, login } from "@/lib/types/user";
+import { LoaderCircle } from "lucide-react";
 
 const Authform = () => {
   const router = useRouter();
@@ -61,7 +36,7 @@ const Authform = () => {
   const [signupstatus, setSignupstatus] = useState(false);
   const [err, setErr] = useState("");
   // State to manage loading
-  const signupform = useForm<z.infer<typeof signupSchema>>({
+  const signupform = useForm<signup>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
       name: "",
@@ -70,7 +45,7 @@ const Authform = () => {
       password: "",
     },
   });
-  const loginform = useForm<z.infer<typeof loginSchema>>({
+  const loginform = useForm<login>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -93,8 +68,6 @@ const Authform = () => {
       setTimeout(() => {
         setSignupstatus(false);
       }, 5000);
-
-      // After successful login, you might want to redirect or show a success message
     } catch (error) {
       console.log(error);
       setErr(error.response.data.message);
@@ -102,14 +75,13 @@ const Authform = () => {
         setSignupstatus(false);
         setErr("");
       }, 5000);
-      // Handle login error, show a message to the user
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   const Login = async (values: z.infer<typeof loginSchema>) => {
-    setLoading(true); // Start loading
+    setLoading(true);
 
     try {
       const loginResponse = await axios.post(
@@ -119,14 +91,11 @@ const Authform = () => {
       console.log(loginResponse.data);
       authctx.login(loginResponse.data.access_token);
       router.push("/");
-      // After successful login, you might want to redirect or show a success message
     } catch (error) {
       console.log(error);
-      if(error.response){
-
-          setErr(error.response.data.message);
-      }
-      else{
+      if (error.response) {
+        setErr(error.response.data.message);
+      } else {
         setErr(error.message);
       }
       // Handle login error, show a message to the user
@@ -296,21 +265,10 @@ const Authform = () => {
                 </Button>
                 <CardFooter>
                   {loading && (
-                    <div className=" flex flex-row items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="animate-spin"
-                      >
-                        <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                      </svg>
-                    </div>
+                    <LoaderCircle
+                      strokeWidth="3"
+                      className="text-white  h-6 w-6 animate-spin mx-4 "
+                    />
                   )}
                   {err && <p className="text-red-500">{err}</p>}
                   {signupstatus && (

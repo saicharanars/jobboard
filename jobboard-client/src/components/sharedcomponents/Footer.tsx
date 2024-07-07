@@ -1,6 +1,5 @@
 import { Button } from "../ui/button";
-
-
+import { Input } from "../ui/input";
 
 const Footer = () => {
   const about = ["companies", "pricing", "terms", "advice", "privacy policy"];
@@ -34,18 +33,19 @@ const Footer = () => {
             ))}
           </div>
           <div className="flex flex-col pt-6 mr-2 gap-2">
-            <h1 className="text-xl font-bold text-white">Get Job Notifications</h1>
-            <p  className="text-slate-400">
-                The latest job news,articles sent to your inbox directly
-              </p>
-            <div className="flex flex-col md:flex-row gap-1 pt-4 ">
-                <input  placeholder="Email Address"></input>
-                <Button className=" bg-blue-800 border-r-0 hover:bg-white hover:text-blue-800">Subscribe</Button>
-
+            <h1 className="text-xl font-bold text-white">
+              Get Job Notifications
+            </h1>
+            <p className="text-slate-400">
+              The latest job news,articles sent to your inbox directly
+            </p>
+            <div className="flex flex-col  gap-3 pt-4 ">
+              <Input className="bg-white" placeholder="Email Address"></Input>
+              <Button className=" bg-blue-800 border-r-0 hover:bg-white hover:text-blue-800">
+                Subscribe
+              </Button>
             </div>
           </div>
-
-          
         </div>
       </div>
     </>

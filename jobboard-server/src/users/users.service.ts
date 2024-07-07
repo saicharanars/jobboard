@@ -26,8 +26,8 @@ export class UsersService {
     const hashedpassword = await bcrypt.hash(password, 10);
     const user = { ...rest, email, password: hashedpassword };
 
-    const userResult = await this.entityManager.save(User, user);
-    return plainToClass(UserDto, userResult);
+    // const userResult = await this.entityManager.save(User, user);
+    return plainToClass(UserDto, user);
   }
 
   async login(loginUser: LoginUserDto) {

@@ -1,4 +1,5 @@
 "use client"
+
 import React, { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext({
@@ -10,29 +11,31 @@ const AuthContext = createContext({
 
 export const AuthProvider = (props) => {
   const [token, setToken] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
+      setIsLoggedIn(true);
     }
   }, []);
 
-  const userIsLoggedIn = !!token;
-
   const loginHandler = (token: string) => {
     setToken(token);
+    setIsLoggedIn(true);
     localStorage.setItem("token", token);
   };
 
   const logoutHandler = () => {
     setToken("");
     localStorage.removeItem("token");
+    setIsLoggedIn(false);
   };
 
   const contextValue = {
     token: token,
-    isLoggedIn: userIsLoggedIn,
+    isLoggedIn: isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
   };
