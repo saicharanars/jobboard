@@ -17,3 +17,15 @@ export class JobDto {
   @Exclude()
   user: UserDto;
 }
+export enum sortEnum {
+  asc = 'ASC',
+  desc = 'DESC',
+}
+export enum categoryenum {
+  'java' = 'java',
+  'python' = 'python',
+}
+export enum locationenum {
+  'hyderbad' = 'hyderbad',
+  'bangalore' = 'bangalore',
+}

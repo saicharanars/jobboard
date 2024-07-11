@@ -4,6 +4,7 @@ import { join } from 'path';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Job } from '../jobs/entities/job.entity';
+import { Application } from '../applications/entities/application.entity';
 
 dotenvConfig({ path: '.env' });
 
@@ -14,7 +15,7 @@ const config = {
   username: `${process.env.DB_USERNAME}`,
   password: `${process.env.DB_PASSWORD}`,
   database: `${process.env.DB_DATABASE}`,
-  entities: [User, Job],
+  entities: [User, Job, Application],
   migrations: ['build/migrations/*.js'],
   autoLoadEntities: true,
   synchronize: true,

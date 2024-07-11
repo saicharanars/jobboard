@@ -6,39 +6,40 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  ParseUUIDPipe,
+  Put,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Roles } from '../auth/auth.gaurd';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  
-
-  @Post('signup')
-  async create(@Body() createUser: CreateUserDto) {
-    return this.usersService.create(createUser);
-  }
-
-  @Post('login')
-  async login(@Body() loginUser: LoginUserDto)  {
-    return this.usersService.login(loginUser);
-  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
+//   @UseGuards(AuthGuard)
+//   @Put(':id')
+//   update(
+//     // @Body() updateUserDto: UpdateUserDto,
+//     @Req() req: Request,
+//     @Param('id', ParseUUIDPipe) id: string,
+//   ) {
+//     const user = req['user'];
+//     console.log(id)
+//     return this.usersService.update(user);
+//   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

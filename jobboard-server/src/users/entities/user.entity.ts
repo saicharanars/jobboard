@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Job } from '../../jobs/entities/job.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Application } from '../../applications/entities/application.entity';
 
 export enum UserRole {
   JOB_CANDIDATE = 'job_candidate',
@@ -34,4 +35,10 @@ export class User {
   role: UserRole;
   @OneToMany(() => Job, (job) => job.user)
   jobs: Job[];
+  @OneToMany(() => Application, (application) => application.user)
+  Applications: Application[];
+  @CreateDateColumn()
+  createdDate: Date;
+  @UpdateDateColumn()
+  updatedDate: Date;
 }

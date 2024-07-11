@@ -6,9 +6,10 @@ import { DataSource } from 'typeorm';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { JobsModule } from './jobs/jobs.module';
+import { ApplicationsModule } from './applications/applications.module';
 
 @Module({
-  imports: [DatabaseModule, UsersModule, DatabaseModule, AuthModule, JobsModule],
+  imports: [DatabaseModule, UsersModule, DatabaseModule, AuthModule, JobsModule, ApplicationsModule],
   controllers: [AppController],
   providers: [AppService],
 })

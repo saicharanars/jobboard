@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
@@ -10,60 +9,35 @@ import { UserTokenDto } from '../auth/dto/userTokenDto';
 import { EntityManager } from 'typeorm';
 import { Job } from './entities/job.entity';
 import { plainToClass } from 'class-transformer';
-import { JobDto } from './dto/job.dto';
+import { categoryenum, JobDto, locationenum, sortEnum } from './dto/job.dto';
 import { User } from '../users/entities/user.entity';
+import { FilterDto } from './dto/filter.dto';
 
 @Injectable()
 export class JobsService {
   constructor(private readonly entitymanager: EntityManager) {}
   async create(_createJobDto: CreateJobDto, user: UserTokenDto) {
-    console.log(_createJobDto, user);
+    const userEntity = await this.entitymanager.findOne(User, {
+      where: { id: user.id },
+    });
 
-    if (user.role === 'job_candidate') {
-      throw new UnauthorizedException('You are not allowed to add jobs');
+    if (!userEntity) {
+      throw new BadRequestException('User not found');
     }
 
-    const result = await this.entitymanager.transaction(
-      async (transactionEntityManager) => {
-        // Fetch the user entity
-        const userEntity = await transactionEntityManager.findOne(User, {
-          where: { id: user.id },
-          relations: ['jobs'],
-        });
+    const newJob = await this.entitymanager.create(Job, _createJobDto);
+    newJob.user = userEntity;
+    const savejob = await this.entitymanager.save(Job, newJob);
 
-        // Check if user entity was found
-        if (!userEntity) {
-          throw new BadRequestException('User not found');
-        }
-
-        // Create a new job associated with the user
-        const newJob = transactionEntityManager.create(Job, {
-          ..._createJobDto,
-          user: userEntity,
-        });
-
-        // Save the new job
-        const savedJob = await transactionEntityManager.save(Job, newJob);
-
-        // Add the new job to the user's jobs and save the user entity
-        userEntity.jobs.push(savedJob);
-        await transactionEntityManager.save(User, userEntity);
-
-        return savedJob;
-      },
-    );
+  
 
     return {
-      job: plainToClass(JobDto, result),
+      job: plainToClass(JobDto, savejob),
       message: 'Successfully added job',
     };
   }
 
   async findAll(_user: UserTokenDto) {
-    console.log(_user);
-    if (_user.role == 'job_candidate') {
-      throw new UnauthorizedException('you are not allowed to view jobs');
-    }
     const employer_jobs = await this.entitymanager.findOne(User, {
       where: {
         id: _user.id,
@@ -97,12 +71,6 @@ export class JobsService {
   }
 
   async update(jobid: string, updateJobDto: UpdateJobDto, _user: UserTokenDto) {
-    console.log(updateJobDto, _user);
-    if (_user.role == 'job_candidate') {
-      throw new UnauthorizedException(
-        'you are not an employer,you are not allowed to update jobs',
-      );
-    }
     const job = await this.entitymanager.findOne(Job, {
       where: {
         id: jobid,
@@ -134,9 +102,6 @@ export class JobsService {
   }
 
   async remove(jobid: string, _user: UserTokenDto) {
-    if (_user.role == 'job_candidate') {
-      throw new UnauthorizedException('you are not allowed to delete jobs');
-    }
     const job = await this.entitymanager.findOne(Job, {
       where: {
         id: jobid,
@@ -149,13 +114,41 @@ export class JobsService {
     console.log(job);
     if (job.user.id != _user.id) {
       throw new BadRequestException(
-        'you are not owner of job, only emplyer of job can delete jobs',
+        'you are not owner of job, only employer of job can delete jobs',
       );
     }
-    const deleted = await this.entitymanager.delete(Job, job);
+    const deleted = await this.entitymanager.remove(job);
+    console.log(deleted);
     return {
       job: plainToClass(JobDto, deleted),
       message: 'Successfully deleted job',
     };
+  }
+
+  async alljobs(params: FilterDto) {
+    console.log(params);
+    const queryBuilder = this.entitymanager.createQueryBuilder(Job, 'job');
+
+    // Apply sorting
+    if (params.sort) {
+      queryBuilder.orderBy('job.createdDate', params.sort);
+    } else {
+      queryBuilder.orderBy('job.createdDate', 'DESC'); // Default sort
+    }
+    if (params.category) {
+      queryBuilder.andWhere('job.category = :category', {
+        category: params.category,
+      });
+    }
+
+    // Apply location filter
+    if (params.location) {
+      queryBuilder.andWhere('job.location = :location', {
+        location: params.location,
+      });
+    }
+
+    const jobs = await queryBuilder.getMany();
+    return jobs;
   }
 }
