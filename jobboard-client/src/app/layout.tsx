@@ -15,6 +15,7 @@ import {
   SearchIcon,
   UserIcon,
 } from "lucide-react";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -62,13 +63,14 @@ export default function RootLayout({
                       <FileIcon className="h-4 w-4" />
                       Applications
                     </a> */}
-                    <a
-                      href="#"
-                      className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"
+                    <Link
+                      href="/jobs"
+                      className="inline-flex items-center space-x-2"
                     >
                       <SearchIcon className="h-4 w-4" />
-                      Find Jobs
-                    </a>
+                      <span>Find Jobs</span>
+                    </Link>
+
                     {/* <a
                       href="#"
                       className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"

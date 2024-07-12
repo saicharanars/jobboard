@@ -82,7 +82,7 @@ const Root = () => {
               </nav>
             </div>
           </AuthCheck>
-          
+          {children}
         </div>
         <Footer />
       </div>
