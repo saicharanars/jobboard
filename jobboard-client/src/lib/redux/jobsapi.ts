@@ -15,7 +15,7 @@ export const jobsApi = createApi({
   endpoints: (builder) => ({
     getJobs: builder.query<Job[], { token: string }>({
       // Change the type to accept a string parameter
-      query: ({token}) => ({
+      query: ({ token }) => ({
         // Accept token as a parameter
         url: "jobs/company",
         headers: {
@@ -54,6 +54,22 @@ export const jobsApi = createApi({
         },
       }),
       invalidatesTags: ["Jobs"],
+    }),
+    getJobsForUser: builder.query<
+      Job[],
+      { sortdate?: string; category?: string; location?: string }
+    >({
+      query: (params) => {
+        const queryParams = new URLSearchParams();
+        if (params.sortdate) queryParams.append("sortdate", params.sortdate);
+        if (params.category) queryParams.append("category", params.category);
+        if (params.location) queryParams.append("location", params.location);
+
+        return {
+          url: `/jobs?${queryParams.toString()}`,
+          method: "GET",
+        };
+      },
     }),
   }),
 });

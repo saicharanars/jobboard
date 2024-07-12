@@ -4,6 +4,7 @@ import Authbutton from "./AuthButton";
 import Sidesheet from "./Sidesheet";
 import Checkuser from "./Checkuser";
 import Authcheck from "./Authcheck";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -44,12 +45,14 @@ const Header = () => {
               JobHuntly
             </span>
           </a>
-          <p className=" hidden md:block  text-xl text-slate-400  p-3   ">
-            Find jobs
-          </p>
-          <p className=" hidden md:block  text-xl text-slate-400  p-3  ">
+          <Link href="/jobs">
+            <p className=" hidden md:block  text-xl text-slate-400  p-3   ">
+              Find jobs
+            </p>
+          </Link>
+          {/* <p className=" hidden md:block  text-xl text-slate-400  p-3  ">
             Browse Companies
-          </p>
+          </p> */}
         </div>
         <div className="   flex  justify-around align-middle content-center p-2 gap-5 ">
           <Authbutton />

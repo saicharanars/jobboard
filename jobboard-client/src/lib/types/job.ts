@@ -14,9 +14,12 @@ const addjobSchema = z.object({
     message: "category must be at least 3 characters.",
   }),
   openings: z.coerce.number(),
+  questions:z.string().array()
 });
 const jobSchema = addjobSchema.extend({
-  id: z.string().uuid(), // Assuming id is a UUID
+  id: z.string().uuid(),
+  createdDate:z.string().datetime()
+   // Assuming id is a UUID
 });
 
 export type addJob = z.infer<typeof addjobSchema>;
