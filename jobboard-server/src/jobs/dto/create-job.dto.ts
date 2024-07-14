@@ -5,28 +5,41 @@ export class CreateJobDto {
   @IsNotEmpty()
   @MinLength(5)
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'This is the job role of a job',
+  })
   job_role: string;
   @IsNotEmpty()
   @MinLength(30)
   @IsString()
   @ApiProperty()
+  @ApiProperty({
+    description: 'This is the description of a job',
+  })
   description: string;
   @IsNotEmpty()
   @MinLength(3)
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'job category',
+  })
   category: string;
   @IsNotEmpty()
   @MinLength(5)
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Location of the job',
+  })
   location: string;
   @IsNotEmpty()
   @IsInt()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'no of job openings',
+  })
   openings: number;
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'questions to ask from the job seeker',
+  })
   questions: string[];
 }

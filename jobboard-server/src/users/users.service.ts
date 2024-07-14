@@ -8,6 +8,7 @@ import { UserDto } from './dto/user.dto';
 import { plainToClass } from 'class-transformer';
 import { LoginUserDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { UserTokenDto } from '../auth/dto/userTokenDto';
 
 @Injectable()
 export class UsersService {
@@ -61,11 +62,12 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(user: UserTokenDto) {
+    console.log(user);
+    return `This action updates a  user`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} user`;
   }
 }

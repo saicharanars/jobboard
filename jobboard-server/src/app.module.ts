@@ -7,9 +7,18 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
 import { JobsModule } from './jobs/jobs.module';
 import { ApplicationsModule } from './applications/applications.module';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
-  imports: [DatabaseModule, UsersModule, DatabaseModule, AuthModule, JobsModule, ApplicationsModule],
+  imports: [
+    DatabaseModule,
+    UsersModule,
+    DatabaseModule,
+    AuthModule,
+    JobsModule,
+    ApplicationsModule,
+    ProfilesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

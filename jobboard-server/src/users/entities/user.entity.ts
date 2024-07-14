@@ -1,7 +1,17 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Job } from '../../jobs/entities/job.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Application } from '../../applications/entities/application.entity';
+import { Profile } from '../../profiles/entities/profile.entity';
 
 export enum UserRole {
   JOB_CANDIDATE = 'job_candidate',
@@ -37,6 +47,15 @@ export class User {
   jobs: Job[];
   @OneToMany(() => Application, (application) => application.user)
   Applications: Application[];
+
+  @OneToOne(() => Profile, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({
+    referencedColumnName: 'id',
+  })
+  profile: Profile;
   @CreateDateColumn()
   createdDate: Date;
   @UpdateDateColumn()

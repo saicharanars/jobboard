@@ -5,25 +5,35 @@ export class UpdateJobDto {
   @IsOptional()
   @MinLength(5)
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'job role',
+  })
   job_role: string;
   @IsOptional()
   @MinLength(30)
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'job description',
+  })
   description: string;
   @IsOptional()
   @MinLength(3)
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'category',
+  })
   category: string;
   @IsOptional()
   @MinLength(5)
   @IsString()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'location',
+  })
   location: string;
   @IsOptional()
   @IsInt()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'no of job openings',
+  })
   openings: number;
 }

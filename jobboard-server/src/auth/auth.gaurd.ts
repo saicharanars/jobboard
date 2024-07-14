@@ -21,7 +21,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-
+    console.log(token)
     if (!token) {
       throw new UnauthorizedException();
     }
@@ -31,14 +31,13 @@ export class AuthGuard implements CanActivate {
         secret: `${process.env.JWT}`,
       });
 
-      // Attach the user information to the request
       request['user'] = payload;
 
-      // Check if the route has any role requirements
       const requiredRoles = this.reflector.get<string[]>(
         'roles',
         context.getHandler(),
       );
+      console.log(requiredRoles)
       if (requiredRoles && requiredRoles.length) {
         return requiredRoles.includes(payload.role);
       }

@@ -9,7 +9,7 @@ import { UserTokenDto } from '../auth/dto/userTokenDto';
 import { EntityManager } from 'typeorm';
 import { Job } from './entities/job.entity';
 import { plainToClass } from 'class-transformer';
-import { categoryenum, JobDto, locationenum, sortEnum } from './dto/job.dto';
+import { JobDto } from './dto/job.dto';
 import { User } from '../users/entities/user.entity';
 import { FilterDto } from './dto/filter.dto';
 
@@ -22,14 +22,12 @@ export class JobsService {
     });
 
     if (!userEntity) {
-      throw new BadRequestException('User not found');
+      throw new NotFoundException('User not found');
     }
 
     const newJob = await this.entitymanager.create(Job, _createJobDto);
     newJob.user = userEntity;
     const savejob = await this.entitymanager.save(Job, newJob);
-
-  
 
     return {
       job: plainToClass(JobDto, savejob),
@@ -60,6 +58,7 @@ export class JobsService {
       where: {
         id: jobid,
       },
+      
     });
     if (!job) {
       throw new NotFoundException('Job with this id is not found');
@@ -92,8 +91,6 @@ export class JobsService {
       jobid,
       updateJobDto,
     );
-
-    console.log(updatedjob, '<<<<<<<');
 
     return {
       job: plainToClass(JobDto, updatedjob),
@@ -129,7 +126,6 @@ export class JobsService {
     console.log(params);
     const queryBuilder = this.entitymanager.createQueryBuilder(Job, 'job');
 
-    // Apply sorting
     if (params.sort) {
       queryBuilder.orderBy('job.createdDate', params.sort);
     } else {
@@ -141,7 +137,6 @@ export class JobsService {
       });
     }
 
-    // Apply location filter
     if (params.location) {
       queryBuilder.andWhere('job.location = :location', {
         location: params.location,
