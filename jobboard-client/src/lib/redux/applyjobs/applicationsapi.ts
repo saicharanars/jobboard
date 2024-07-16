@@ -1,7 +1,7 @@
 // lib/redux/jobsApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Job } from "../../types/job";
-import { addJobApplication } from "@/lib/types/Application";
+import { addJobApplication, JobApplication } from "@/lib/types/Application";
 
 export const applicationsApi = createApi({
   reducerPath: "ApplicationsApi",
@@ -43,7 +43,17 @@ export const applicationsApi = createApi({
       }),
       invalidatesTags: ["Applications"],
     }),
+    getApplications: builder.query<JobApplication[], { token: string }>({
+      // Change the type to accept a string parameter
+      query: ({ token }) => ({
+        // Accept token as a parameter
+        url: "applications/user",
+        headers: {
+          Authorization: token, // Set the token in the headers
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetJobsForallQuery,useAddApplicationMutation } = applicationsApi;
+export const { useGetJobsForallQuery,useAddApplicationMutation,useGetApplicationsQuery } = applicationsApi;
