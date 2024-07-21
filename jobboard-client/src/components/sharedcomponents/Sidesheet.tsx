@@ -49,6 +49,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Navigation from "./Navigation";
 const Sidesheet = () => {
   return (
     <>
@@ -97,82 +98,7 @@ const Sidesheet = () => {
               </a>
             </SheetTitle>
           </SheetHeader>
-          <nav className="grid items-start  text-sm font-medium pt-3">
-            <Authcheck redirect={false}>
-              <a
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Home className="h-4 w-4" />
-                Dashboard
-              </a>
-            </Authcheck>
-            <Authcheck redirect={false}>
-              <a
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"
-              >
-                <MessageSquareIcon className="h-4 w-4" />
-                Mesages
-                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                  6
-                </Badge>
-              </a>
-            </Authcheck>
-            <Authcheck redirect={false}>
-              <a
-                href="#"
-                className="flex items-center gap-3 rounded-lg bg-[#CCCCF5] px-4 py-3 text-primary transition-all hover:text-primary"
-              >
-                <FileIcon className="h-4 w-4" />
-                Applications
-              </a>
-            </Authcheck>
-            <a
-              href="#"
-              className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"
-            >
-              <BriefcaseBusiness className="h-4 w-4" />
-              
-              Find Jobs
-            </a>
-            <a
-              href="#"
-              className="flex items-center gap-3 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"
-            >
-              <SearchIcon className="h-4 w-4" />
-              Find companies
-            </a>
-            <Authcheck redirect={false}>
-              <a
-                href="#"
-                className="flex items-center gap-3 border-b rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"
-              >
-                <UserIcon className="h-4 w-4" />
-                my Profile
-              </a>
-            </Authcheck>
-            <Authcheck redirect={false}>
-              <div className=" px-4 py-3 text-muted-foreground transition-all hover:text-primary ">
-                <p className="text-xl">Settings</p>
-              </div>
-            </Authcheck>
-            <Authcheck redirect={false}>
-              <a
-                href="#"
-                className="flex items-center gap-3  rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary"
-              >
-                <UserIcon className="h-4 w-4" />
-                my Profile
-              </a>
-            </Authcheck>
-            
-          </nav>
-          <SheetFooter>
-            <SheetClose asChild>
-              <Button type="submit">Save changes</Button>
-            </SheetClose>
-          </SheetFooter>
+          <Navigation />
         </SheetContent>
       </Sheet>
     </>

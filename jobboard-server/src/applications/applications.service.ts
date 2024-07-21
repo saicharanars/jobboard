@@ -13,6 +13,7 @@ import { JobsService } from '../jobs/jobs.service';
 import { Job } from '../jobs/entities/job.entity';
 import { ApplicationDto } from './dto/application.dto';
 import { plainToClass, plainToInstance } from 'class-transformer';
+import { userApplicationsDto } from './dto/userapplication.dto';
 
 @Injectable()
 export class ApplicationsService {
@@ -65,22 +66,22 @@ export class ApplicationsService {
 
     const applications = await this.entitymanager.find(Application, {
       where: { user: { id: user.id } },
-      relations: ['job'], // Include this if you want to fetch job details with each application
+      relations: ['job'],
     });
     console.log(applications);
     return {
-      applications: plainToInstance(ApplicationDto, applications),
-      message: 'sucessfuly retrieved jobs',
+      applications: plainToInstance(userApplicationsDto, applications),
+      message: 'sucessfuly retrieved applications',
     };
   }
 
   async findOne(id: string) {
-    const applications = await this.entitymanager.find(Application, {
+    const application = await this.entitymanager.findOne(Application, {
       where: { id: id },
-      relations: ['job'], // Include this if you want to fetch job details with each application
+      relations: ['job'],
     });
     return {
-      job: plainToInstance(Application, applications),
+      job: application,
       message: 'sucessfuly retrieved job',
     };
   }

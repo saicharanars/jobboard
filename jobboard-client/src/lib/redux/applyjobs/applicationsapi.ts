@@ -51,9 +51,15 @@ export const applicationsApi = createApi({
         headers: {
           Authorization: token, // Set the token in the headers
         },
+        transformResponse: (response) => response.applications,
+        transformErrorResponse: (response) => response.data.message,
       }),
     }),
   }),
 });
 
-export const { useGetJobsForallQuery,useAddApplicationMutation,useGetApplicationsQuery } = applicationsApi;
+export const {
+  useGetJobsForallQuery,
+  useAddApplicationMutation,
+  useGetApplicationsQuery,
+} = applicationsApi;
