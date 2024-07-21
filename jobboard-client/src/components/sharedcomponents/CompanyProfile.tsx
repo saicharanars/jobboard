@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { profile } from "@/lib/types/user";
+import { profile, user } from "@/lib/types/user";
 import {
   Fire,
   Dob,
@@ -22,49 +22,72 @@ import {
   Ruby,
   Html,
 } from "./Svg";
+import { useSelector } from "react-redux";
+import {
+  Flame,
+  GithubIcon,
+  Globe,
+  Globe2Icon,
+  Layers3,
+  MapPin,
+  Users,
+  Users2,
+} from "lucide-react";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import Editresume from "./Editresume";
+import EditProfileDialog from "./EditProfileDialog";
+import UpdateProfilebutton from "./UpdateProfilebutton";
+import EditPhoto from "./EditPhoto";
 
-const CompanyProfile = (profile: profile) => {
+const CompanyProfile = () => {
+  const profile: profile = useSelector((state) => state.profile.profile);
+  const user: user = useSelector((state) => state.profile.user);
   return (
     <div className="col-span-5 md:col-span-4 grid grid-cols-1  p-1 md:p-2 gap-3">
-      <SectionHeader title="My Profile" actionElement={<Button>back</Button>} />
+      <SectionHeader
+        title="My Profile"
+        actionElement={<UpdateProfilebutton profile={profile} />}
+      />
 
-      <Card className="p-1 md:p-1 grid grid-cols-1 md:grid-cols-4 mx-4">
-        <div className="flex flex-row justify-between items-center mr-0 my-auto">
+      <Card className="p-1 md:p-2 grid grid-cols-1 md:grid-cols-6 ">
+        <div className="flex flex-row justify-between">
           <img
-            src="https://github.com/shadcn.png"
+            src={profile.profile_picture_url}
             alt="stripe"
-            className="w-12 h-12 md:w-36 md:h-36 m-2"
+            className="w-12 h-12 md:w-28 md:h-28 m-2"
           />
-          <Button
-            variant="outline"
-            className="md:hidden m-2 text-blue-500  rounded-sm border-blue-500"
-          >
-            43 jobs
-          </Button>
+          <div className="md:hidden">
+            <EditPhoto />
+          </div>
         </div>
-        <div className=" col-span-3 my-auto">
-          <CardHeader>
-            <CardTitle className="text-3xl ">Stripe</CardTitle>
-            <CardDescription className="text-blue-500">
-              https://stripe.com
-            </CardDescription>
+        <div className=" col-span-5 my-auto">
+          <CardHeader className="flex flex-row justify-between">
+            <div>
+              <CardTitle className="text-3xl ">Stripe</CardTitle>
+              <CardDescription className="text-blue-500">
+                https://stripe.com
+              </CardDescription>
+            </div>
+            <div className="hidden md:block">
+              <EditPhoto />
+            </div>
           </CardHeader>
 
           <CardContent className="flex flex-col md:flex-row my-auto  items-start">
-            <div className="flex flex-row  items-start ">
-              <div className="p-3 my-auto">
-                <Fire />
+            <div className="flex flex-row  items-start gap-1 ">
+              <div className="p-1 my-auto   border-blue-500 border-2 rounded-full">
+                <Flame className="text-blue-500" />
               </div>
               <div className="flex flex-col items-start my-auto">
                 <p className="text-[#515B6F] text-md  font-thin">Founded</p>
                 <p className=" text-sm      text-[#25324B] font-semibold   ">
-                {new Date(profile.date_of_birth).toLocaleDateString()}
+                  {new Date(profile.date_of_birth).toLocaleDateString()}
                 </p>
               </div>
             </div>
-            <div className="flex flex-row  items-start">
-              <div className="p-3 my-auto">
-                <Dob />
+            <div className="flex flex-row  items-start gap-1 ">
+              <div className="p-1 my-auto   border-blue-500 border-2 rounded-full">
+                <Users2 className="text-blue-500" />
               </div>
               <div className="flex flex-col items-start my-auto">
                 <p className="text-[#515B6F] text-md  font-thin">Employees</p>
@@ -73,9 +96,9 @@ const CompanyProfile = (profile: profile) => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-row  items-start">
-              <div className="p-3 my-auto">
-                <Coun />
+            <div className="flex flex-row  items-start gap-1 ">
+              <div className="p-1 my-auto   border-blue-500 border-2 rounded-full">
+                <MapPin className="text-blue-500" />
               </div>
               <div className="flex flex-col items-start my-auto">
                 <p className="text-[#515B6F] text-md  font-thin">Location</p>
@@ -84,9 +107,9 @@ const CompanyProfile = (profile: profile) => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-row  items-start">
-              <div className="p-3 my-auto">
-                <Loc />
+            <div className="flex flex-row  items-start gap-1 ">
+              <div className="p-1 my-auto   border-blue-500 border-2 rounded-full">
+                <Layers3 className="text-blue-500" />
               </div>
               <div className="flex flex-col items-start my-auto">
                 <p className="text-[#515B6F] text-md  font-thin">Industry</p>
@@ -117,8 +140,8 @@ const CompanyProfile = (profile: profile) => {
                 variant="outline"
                 className="  text-blue-500  rounded-sm border-blue-500 gap-2"
               >
-                <Twitter />
-                twitter
+                <Linkedin />
+                <p>linkedin</p>
               </Button>
             </a>
             <a href={profile.sociallinks?.github}>
@@ -126,8 +149,8 @@ const CompanyProfile = (profile: profile) => {
                 variant="outline"
                 className="  text-blue-500  rounded-sm border-blue-500 gap-2"
               >
-                <Facebook />
-                facebook
+                <GitHubLogoIcon className="h-5 w-5 text-blue-700" />
+                github
               </Button>
             </a>
             <a href={profile.sociallinks?.website}>
@@ -135,8 +158,8 @@ const CompanyProfile = (profile: profile) => {
                 variant="outline"
                 className="  text-blue-500  rounded-sm border-blue-500   gap-2"
               >
-                <Linkedin />
-                <p>linkedin</p>
+                <Globe className="h-5 w-5" />
+                <p>Website</p>
               </Button>
             </a>
           </div>

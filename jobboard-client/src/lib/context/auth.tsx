@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { createContext, useState, useEffect } from "react";
 
@@ -7,17 +7,26 @@ const AuthContext = createContext({
   isLoggedIn: false,
   login: (token: string) => {},
   logout: () => {},
+  role: "",
 });
 
 export const AuthProvider = (props) => {
   const [token, setToken] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
-      setToken(storedToken);
-      setIsLoggedIn(true);
+      const user = JSON.parse(atob(storedToken.split(".")[1]));
+      const expirationTime = user.exp * 1000; // Convert to milliseconds
+      if (Date.now() < expirationTime) {
+        setToken(storedToken);
+        setIsLoggedIn(true);
+        setRole(user.role);
+      } else {
+        localStorage.removeItem("token");
+      }
     }
   }, []);
 
@@ -38,9 +47,14 @@ export const AuthProvider = (props) => {
     isLoggedIn: isLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
+    role: role,
   };
 
-  return <AuthContext.Provider value={contextValue}>{props.children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {props.children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContext;

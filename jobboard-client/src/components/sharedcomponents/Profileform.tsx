@@ -1,0 +1,187 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { editprofile, editprofileschema } from "@/lib/types/user";
+import React, { useContext, useState } from "react";
+import AuthContext from "@/lib/context/auth";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Card, CardHeader, CardContent, CardTitle } from "../ui/card";
+import { Form, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { useEditProfileMutation } from "@/lib/redux/profile/profileapi";
+import { Check, LoaderCircle } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setProfile } from "@/lib/redux/profile/profilereducer";
+
+const ProfileForm = ({ profile }: { profile?: editprofile }) => {
+  const authCtx = useContext(AuthContext);
+  const [success, setSuccess] = useState(false);
+  const [myError, setMyError] = useState("");
+  const dispatch = useDispatch();
+  const [edit, { isLoading, error: iserror, isSuccess }] =
+    useEditProfileMutation();
+  const profileForm = useForm<editprofile>({
+    resolver: zodResolver(editprofileschema),
+    defaultValues: {
+      description: profile?.description || "",
+      date_of_birth: profile?.date_of_birth || "",
+      location: profile?.location || "",
+      sociallinks: {
+        linkedin: profile?.sociallinks?.linkedin || "",
+        github: profile?.sociallinks?.github || "",
+        website: profile?.sociallinks?.website || "",
+      },
+    },
+  });
+
+  const onSubmit = async (values: editprofile) => {
+    try {
+      console.log(values);
+      const result = await edit({
+        editProfile: values,
+        token: authCtx.token,
+      }).unwrap();
+      console.log(result);
+      dispatch(setProfile(result));
+      // Replace with your submit logic
+      // Example logic to handle form submission
+      // const result = await axios.post("/api/profile", values);
+      // console.log(result.data);
+      setSuccess(true);
+    } catch (error) {
+      setMyError(error);
+    }
+  };
+
+  return (
+    <div className="w-full mx-2 p-1 overflow-y-auto">
+      <Card>
+        <CardHeader className="text-center p-1">
+          {myError && (
+            <Alert variant="destructive">
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{myError}</AlertDescription>
+            </Alert>
+          )}
+          {success && (
+            <Alert variant="success">
+              <AlertTitle>Success</AlertTitle>
+              <AlertDescription>
+                {profile
+                  ? "Profile updated successfully"
+                  : "Profile added successfully"}
+              </AlertDescription>
+            </Alert>
+          )}
+        </CardHeader>
+        <CardContent className="my-2">
+          <Form {...profileForm}>
+            <form onSubmit={profileForm.handleSubmit(onSubmit)}>
+              <FormField
+                control={profileForm.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <Textarea {...field} placeholder="Enter description" />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={profileForm.control}
+                name="date_of_birth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date of Birth</FormLabel>
+                    <Input {...field} type="date" />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={profileForm.control}
+                name="location"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Location</FormLabel>
+                    <Input {...field} placeholder="Enter location" />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormLabel>Social Links</FormLabel>
+              <FormField
+                control={profileForm.control}
+                name="sociallinks.linkedin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>LinkedIn</FormLabel>
+                    <Input
+                      {...field}
+                      type="url"
+                      placeholder="Enter LinkedIn URL"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={profileForm.control}
+                name="sociallinks.github"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>GitHub</FormLabel>
+                    <Input
+                      {...field}
+                      type="url"
+                      placeholder="Enter GitHub URL"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={profileForm.control}
+                name="sociallinks.website"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Website</FormLabel>
+                    <Input
+                      {...field}
+                      type="url"
+                      placeholder="Enter Website URL"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full mt-3 text-white bg-blue-800 hover:bg-blue-900"
+              >
+                {isLoading && (
+                  <LoaderCircle
+                    strokeWidth="3"
+                    className="text-white h-6 w-6 animate-spin mx-4"
+                  />
+                )}
+                {profile ? "Update Profile" : "Add Profile"}
+                {isSuccess && (
+                  <Check strokeWidth="3" className="text-white h-6 w-6  mx-4" />
+                )}
+              </Button>
+              {{ iserror } && <p>{iserror}</p>}
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default ProfileForm;

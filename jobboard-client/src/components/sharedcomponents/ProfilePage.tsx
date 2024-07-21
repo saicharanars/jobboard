@@ -1,61 +1,68 @@
 "use client";
 import AuthContext from "@/lib/context/auth";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Profile from "./Profile";
+import CompanyProfile from "./CompanyProfile"; // Assuming you have this component
 import AuthCheck from "./Authcheck";
-import axios from "axios";
-import CompanyProfile from "./CompanyProfile";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetProfileQuery } from "@/lib/redux/profile/profileapi";
+import { setProfile, setUser } from "@/lib/redux/profile/profilereducer";
+import { redirect } from "next/navigation";
 
 const ProfilePage = () => {
   const authCtx = useContext(AuthContext);
-  const [profile, setProfile] = useState({
-    profile: {
-      id: "",
-      description: "",
-      date_of_birth: "",
-      resume_url: "",
-      profile_picture_url: "",
-      location: "",
-      sociallinks: {
-        linkedin: " ",
-        github: " ",
-        website: " ",
-      },
-      createdDate: "",
-      updatedDate: "",
-    },
-    message: "Successfully updated Profile",
-  });
   const role = authCtx.role;
-  const token = authCtx.token;
+  const tok = authCtx.token;
+  const reduxprofile = useSelector((state) => state.profile.profile);
+  const dispatch = useDispatch();
 
-  const url = "http://localhost:3001/profiles/";
+  const {
+    data: profile,
+    isLoading,
+    error,
+    refetch,
+  } = useGetProfileQuery(
+    { token: tok },
+    {
+      skip: !tok,
+    }
+  );
 
   useEffect(() => {
-    if (token) {
-      const fetchProfile = async () => {
-        try {
-          const response = await axios.get(url, {
-            headers: {
-              Authorization: token,
-            },
-          });
-          console.log(response.data);
-          setProfile(response.data.profile);
-        } catch (error) {
-          console.error("Error fetching profile:", error);
-        }
-      };
-
-      fetchProfile();
-      console.log(profile);
+    if (tok) {
+      refetch();
     }
-  }, [token]);
+  }, [tok, refetch]);
+
+  useEffect(() => {
+    if (profile) {
+      dispatch(setProfile(profile.profile));
+      dispatch(setUser(profile));
+    }
+  }, [dispatch, profile]);
+
+  useEffect(() => {
+    if (error && error === "Unauthorized") {
+      authCtx.logout();
+      redirect("/auth");
+    }
+  }, [error, authCtx]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error && error !== "Unauthorized") {
+    console.error("Error fetching profile:", error);
+    return <p>Error loading profile. Please try again later.</p>;
+  }
 
   return (
     <AuthCheck>
-      {role === "job_candidate" && profile && <Profile {...profile} />}
-      {role === "job_employer" && <CompanyProfile {...profile} />}
+      {role === "job_candidate" && reduxprofile && <Profile />}
+      {role === "job_employer" && reduxprofile && (
+        <CompanyProfile {...reduxprofile} />
+      )}
     </AuthCheck>
   );
 };

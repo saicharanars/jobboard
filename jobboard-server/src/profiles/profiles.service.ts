@@ -3,17 +3,27 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import 'multer';
 import { CreateProfileDto } from './dto/create-profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import {
+  fileType,
+  UpdateProfileDto,
+  uploadType,
+} from './dto/update-profile.dto';
 import { UserTokenDto } from '../auth/dto/userTokenDto';
-import { EntityManager, QueryBuilder } from 'typeorm';
+import { EntityManager } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Profile } from './entities/profile.entity';
 import { plainToClass, plainToInstance } from 'class-transformer';
+import { MediaService } from '../media/media.service';
+import { profileDto } from './dto/profile.dto';
 
 @Injectable()
 export class ProfilesService {
-  constructor(private readonly entitymanager: EntityManager) {}
+  constructor(
+    private readonly entitymanager: EntityManager,
+    private readonly media: MediaService,
+  ) {}
   async create(createProfileDto: CreateProfileDto, usertoken: UserTokenDto) {
     const user = await this.entitymanager.findOne(User, {
       where: { id: usertoken.id },
@@ -102,6 +112,60 @@ export class ProfilesService {
     return {
       profile: profiledeleted,
       message: 'Successfully deleted Profile',
+    };
+  }
+  async userprofile(usertoken: UserTokenDto) {
+    const user = await this.entitymanager.findOne(User, {
+      where: {
+        id: usertoken.id,
+      },
+      relations: ['profile'],
+    });
+    if (!user.profile) {
+      throw new NotFoundException('no profile found');
+    }
+    return {
+      profile: plainToInstance(profileDto, user),
+      message: 'Successfully updated Profile',
+    };
+  }
+  async saveFile(
+    file: Express.Multer.File,
+    user: UserTokenDto,
+    uploadType: uploadType,
+  ) {
+    console.log(file.size, file.mimetype, uploadType.type);
+
+    const uploadfile = await this.media.create(file, user.id, uploadType);
+
+    let updateResult: { profile: UpdateProfileDto; message: string };
+
+    switch (uploadType.type) {
+      case fileType.PHOTO:
+        const photoUpdate: UpdateProfileDto = {
+          profile_picture_url: uploadfile.url,
+        };
+        updateResult = await this.update(user.id, photoUpdate);
+        break;
+      case fileType.PDF:
+        const resumeUpdate: UpdateProfileDto = {
+          resume_url: uploadfile.url,
+        };
+        updateResult = await this.update(user.id, resumeUpdate);
+        break;
+      default:
+        throw new Error('Invalid upload type');
+    }
+
+    // Use plainToInstance to transform the profile part of updateResult
+    const transformedProfile = plainToInstance(
+      UpdateProfileDto,
+      updateResult.profile,
+    );
+
+    return {
+      [uploadType.type]: transformedProfile[uploadType.type],
+      message: updateResult.message + ' with ' + uploadType.type,
     };
   }
 }

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { JobsModule } from './jobs/jobs.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { ProfilesModule } from './profiles/profiles.module';
+import { MediaModule } from './media/media.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ProfilesModule } from './profiles/profiles.module';
     JobsModule,
     ApplicationsModule,
     ProfilesModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
