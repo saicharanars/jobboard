@@ -55,6 +55,21 @@ export const applicationsApi = createApi({
         transformErrorResponse: (response) => response.data.message,
       }),
     }),
+
+    getApplicationsEmployer: builder.query<JobApplication[], { token: string }>(
+      {
+        // Change the type to accept a string parameter
+        query: ({ token }) => ({
+          // Accept token as a parameter
+          url: "applications/employer",
+          headers: {
+            Authorization: token, // Set the token in the headers
+          },
+          transformResponse: (response) => response.applications,
+          transformErrorResponse: (response) => response.data.message,
+        }),
+      }
+    ),
   }),
 });
 
@@ -62,4 +77,5 @@ export const {
   useGetJobsForallQuery,
   useAddApplicationMutation,
   useGetApplicationsQuery,
+  useGetApplicationsEmployerQuery,
 } = applicationsApi;

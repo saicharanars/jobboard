@@ -7,35 +7,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { profile, user } from "@/lib/types/user";
-import {
-  Fire,
-  Dob,
-  Loc,
-  Coun,
-  Twitter,
-  Facebook,
-  Linkedin,
-  Css,
-  Js,
-  Ruby,
-  Html,
-} from "./Svg";
+import { Css, Js, Ruby, Html } from "./Svg";
 import { useSelector } from "react-redux";
 import {
   Flame,
-  GithubIcon,
   Globe,
-  Globe2Icon,
   Layers3,
+  LinkedinIcon,
   MapPin,
-  Users,
   Users2,
 } from "lucide-react";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import Editresume from "./Editresume";
-import EditProfileDialog from "./EditProfileDialog";
 import UpdateProfilebutton from "./UpdateProfilebutton";
 import EditPhoto from "./EditPhoto";
 
@@ -73,7 +56,7 @@ const CompanyProfile = () => {
             </div>
           </CardHeader>
 
-          <CardContent className="flex flex-col md:flex-row my-auto  items-start">
+          <CardContent className="flex flex-col md:flex-row my-auto gap-1 items-start">
             <div className="flex flex-row  items-start gap-1 ">
               <div className="p-1 my-auto   border-blue-500 border-2 rounded-full">
                 <Flame className="text-blue-500" />
@@ -140,7 +123,7 @@ const CompanyProfile = () => {
                 variant="outline"
                 className="  text-blue-500  rounded-sm border-blue-500 gap-2"
               >
-                <Linkedin />
+                <LinkedinIcon className="h-5 w-5 text-blue-700" />
                 <p>linkedin</p>
               </Button>
             </a>

@@ -2,13 +2,17 @@
 import { useContext, useEffect } from "react";
 import AuthContext from "@/lib/context/auth";
 import { DataTable } from "./DataTable";
-import { columns } from "./Applicationstablecolumns";
+import { columns } from "./EmployerApplicationsColumns";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetApplicationsQuery } from "@/lib/redux/applyjobs/applicationsapi";
+import {
+  useGetApplicationsEmployerQuery,
+  useGetApplicationsQuery,
+} from "@/lib/redux/applyjobs/applicationsapi";
 import { getapplicationslice } from "@/lib/redux/applyjobs/applicatonreducer";
 import store from "@/lib/redux/applyjobs/store";
 import { Provider } from "react-redux";
 import { LoaderCircle } from "lucide-react";
+import AuthCheck from "./Authcheck";
 const Applicationsdata = () => {
   const applications = useSelector((state) => state.application.items);
   const authctx = useContext(AuthContext);
@@ -17,14 +21,10 @@ const Applicationsdata = () => {
     data: applicationsFromApi,
     isLoading,
     error,
-  } = useGetApplicationsQuery({ token: authctx.token });
-
+  } = useGetApplicationsEmployerQuery({ token: authctx.token });
   useEffect(() => {
     console.log("Fetched Applications from API:", applicationsFromApi); // Add this line
-    if (applicationsFromApi && applicationsFromApi.applications) {
-      dispatch(getapplicationslice(applicationsFromApi.applications));
-    }
-  }, [applicationsFromApi, dispatch]);
+  }, [applicationsFromApi]);
 
   if (isLoading)
     return (
@@ -38,15 +38,15 @@ const Applicationsdata = () => {
   if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-2  md:py-10">
       <h1 className="text-xl md:text-2xl font-bold  capitalize my-2">
-        your Applications
+        Applications Received
       </h1>
-      <DataTable columns={columns} data={applications} />
+      <DataTable columns={columns} data={applicationsFromApi.applications} />
     </div>
   );
 };
-const Applications = () => {
+const CompanyApplications = () => {
   return (
     <Provider store={store}>
       <Applicationsdata />
@@ -54,4 +54,4 @@ const Applications = () => {
   );
 };
 
-export default Applications;
+export default CompanyApplications;

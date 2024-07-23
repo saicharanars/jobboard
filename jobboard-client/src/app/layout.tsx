@@ -38,16 +38,19 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <Header />
-          <div className="h-full overflow-auto">
-            <div className="grid grid-cols-5 grid-flow-col bg-[#E9EBFD] gap-2 pt-4">
-              <AuthCheck redirect={false}>
-                <div className="hidden md:block bg-[#E9EBFD]">
+          <div className="grid grid-cols-5 grid-flow-col bg-[#E9EBFD] h-full gap-2 pt-4">
+            <AuthCheck>
+              <div className="hidden md:block md:col-span-1 bg-[#E9EBFD]">
+                <div className="hidden md:block">
                   <Navigation />
                 </div>
-              </AuthCheck>
+              </div>
+            </AuthCheck>
+            <div className="col-span-5 md:col-span-5 bg-[#E9EBFD] h-full">
               {children}
             </div>
           </div>
+
           <Footer />
         </AuthProvider>
       </body>

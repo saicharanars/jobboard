@@ -6,7 +6,7 @@ const Login = () => {
   return (
     <>
         
-        <div className="p-1 md:px-4 container my-2 max-w-sm">
+        <div className="p-1 col-span-5 md:px-4 container my-2 max-w-sm">
           <Authform />
         </div>
         

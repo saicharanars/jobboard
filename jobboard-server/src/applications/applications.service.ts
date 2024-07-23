@@ -6,20 +6,23 @@ import {
 } from '@nestjs/common';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UserTokenDto } from '../auth/dto/userTokenDto';
-import { EntityManager } from 'typeorm';
-import { User } from '../users/entities/user.entity';
+import { EntityManager, Repository } from 'typeorm';
+import { User, UserRole } from '../users/entities/user.entity';
 import { Application } from './entities/application.entity';
 import { JobsService } from '../jobs/jobs.service';
 import { Job } from '../jobs/entities/job.entity';
 import { ApplicationDto } from './dto/application.dto';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { userApplicationsDto } from './dto/userapplication.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ApplicationsService {
   constructor(
     private readonly entitymanager: EntityManager,
     private readonly jobsService: JobsService,
+    @InjectRepository(Application)
+    private applicationRepository: Repository<Application>,
   ) {}
 
   async create(
@@ -72,6 +75,39 @@ export class ApplicationsService {
     return {
       applications: plainToInstance(userApplicationsDto, applications),
       message: 'sucessfuly retrieved applications',
+    };
+  }
+  async findAllApplicants(user: UserTokenDto) {
+    const query = this.applicationRepository
+      .createQueryBuilder('application')
+      .select([
+        'application.id',
+        'application.status',
+        'application.createdDate',
+        'application.resume_url',
+        'application.answers',
+        'job.id',
+        'job.job_role',
+        'job.category',
+        'job.questions',
+        'applicant.id',
+        'applicant.name',
+        'applicant.email',
+        'applicant.mobile_number',
+      ])
+      .innerJoin('application.job', 'job')
+      .innerJoin('job.user', 'employer')
+      .leftJoin('application.user', 'applicant')
+      .where('employer.id = :employerId', { employerId: user.id })
+      .andWhere('employer.role = :employerRole', {
+        employerRole: UserRole.JOB_EMPLOYER,
+      });
+    const applications = await query.getMany();
+
+    return {
+      // applications: plainToInstance(ApplicationDto, applications),
+      applications: applications,
+      message: 'Successfully retrieved all applications for employer',
     };
   }
 

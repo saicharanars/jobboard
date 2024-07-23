@@ -58,12 +58,14 @@ const ProfilePage = () => {
   }
 
   return (
-    <AuthCheck>
-      {role === "job_candidate" && reduxprofile && <Profile />}
-      {role === "job_employer" && reduxprofile && (
+    <>
+      <AuthCheck requiredRole="job_candidate">
+        <Profile />
+      </AuthCheck>
+      <AuthCheck requiredRole="job_employer">
         <CompanyProfile {...reduxprofile} />
-      )}
-    </AuthCheck>
+      </AuthCheck>
+    </>
   );
 };
 

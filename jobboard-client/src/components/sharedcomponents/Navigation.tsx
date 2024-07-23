@@ -1,9 +1,17 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { SearchIcon, User2, SquareDashedKanban, FileText } from "lucide-react";
+import {
+  SearchIcon,
+  User2,
+  SquareDashedKanban,
+  FileText,
+  Power,
+} from "lucide-react";
 import AuthCheck from "./Authcheck";
 import { useRouter } from "next/navigation";
+import { Separator } from "../ui/separator";
+import AuthContext from "@/lib/context/auth";
 
 interface LinkProps {
   href: string;
@@ -34,6 +42,7 @@ const Linkitem: React.FC<LinkProps> = ({
 
 const Navigation: React.FC = () => {
   const router = useRouter();
+  const { logout } = useContext(AuthContext);
   const [activeItem, setActiveItem] = useState<string>(router.pathname);
   useEffect(() => {
     setTimeout(() => {
@@ -43,10 +52,32 @@ const Navigation: React.FC = () => {
   const handleItemClick = (href: string) => {
     setActiveItem(href);
   };
+  const logouthandler = () => {
+    logout();
+    router.push("/auth");
+  };
 
   return (
     <nav className="grid items-start px-2 gap-2 text-sm font-medium lg:px-4">
-      <AuthCheck redirect={false} role="job_candidate">
+      <AuthCheck>
+        <Linkitem
+          href="/users/dashboard"
+          actionElement={<SquareDashedKanban className="h-4 w-4 mr-1" />}
+          title="Dashboard"
+          isActive={activeItem === "/users/dashboard"}
+          onClick={() => handleItemClick("/users/dashboard")}
+        />
+      </AuthCheck>
+      <AuthCheck>
+        <Linkitem
+          href="/users/applications"
+          actionElement={<FileText className="h-4 w-4 mr-1" />}
+          title="My Applications"
+          isActive={activeItem === "/users/applications"}
+          onClick={() => handleItemClick("/users/applications")}
+        />
+      </AuthCheck>
+      <AuthCheck requiredRole="job_candidate">
         <Linkitem
           href="/jobs"
           actionElement={<SearchIcon className="h-4 w-4 mr-1" />}
@@ -55,31 +86,23 @@ const Navigation: React.FC = () => {
           onClick={() => handleItemClick("/jobs")}
         />
       </AuthCheck>
-      <AuthCheck redirect={false}>
+      <AuthCheck>
         <Linkitem
           href="/users/profile"
           actionElement={<User2 className="h-4 w-4 mr-1" />}
-          title="Profile"
+          title="My Profile"
           isActive={activeItem === "/users/profile"}
           onClick={() => handleItemClick("/users/profile")}
         />
       </AuthCheck>
-      <AuthCheck redirect={false} role="job_candidate">
+      <Separator />
+      <AuthCheck>
         <Linkitem
-          href="/users/applications"
-          actionElement={<FileText className="h-4 w-4 mr-1" />}
-          title="Applications"
-          isActive={activeItem === "/users/applications"}
-          onClick={() => handleItemClick("/users/applications")}
-        />
-      </AuthCheck>
-      <AuthCheck redirect={false} role="job_employer">
-        <Linkitem
-          href="/users/dashboard"
-          actionElement={<SquareDashedKanban className="h-4 w-4 mr-1" />}
-          title="Dashboard"
-          isActive={activeItem === "/users/dashboard"}
-          onClick={() => handleItemClick("/users/dashboard")}
+          href="/auth"
+          actionElement={<Power className="h-4 w-4 mr-1" />}
+          title="Logout"
+          isActive={activeItem === "/auth"}
+          onClick={() => logouthandler()}
         />
       </AuthCheck>
     </nav>

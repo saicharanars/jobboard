@@ -76,6 +76,23 @@ export class ApplicationsController {
     const user = req['user'];
     return this.applicationsService.findAll(user);
   }
+  @UseGuards(AuthGuard)
+  @Get('employer')
+  // @Roles('job_employer')
+  @ApiHeader({
+    name: 'Authorization',
+    description:
+      'authorization token like this eyJhbGciOWoidWhkdRpZGF0ZSIsImlhdCI6MTcyMDc2MTQzMCwiZXhwIjoxNzIwODQ3ODMwfQ.jGXo5HhlUZfD_R7wQXJKTanY-rCe4jYGg_hXTmpS71s',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The record has been successfully received.',
+  })
+  findAllapplicants(@Req() req: Request) {
+    const user = req['user'];
+    console.log(user);
+    return this.applicationsService.findAllApplicants(user);
+  }
 
   @Get(':id')
   @ApiParam({

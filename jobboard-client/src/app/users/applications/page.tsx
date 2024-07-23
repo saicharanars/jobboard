@@ -1,10 +1,10 @@
-import Applications from "@/components/sharedcomponents/Applications";
+import ApplicationsPage from "@/components/sharedcomponents/Applicationspage";
 import React from "react";
 
 const page = () => {
   return (
     <div className="col-span-5">
-      <Applications />
+      <ApplicationsPage />
     </div>
   );
 };

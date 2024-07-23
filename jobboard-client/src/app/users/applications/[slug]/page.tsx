@@ -7,7 +7,7 @@ async function getData(id: string): Promise<JobApplicationwithjob[]> {
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
-  
+
   const data = await res.json();
   console.log(data.job);
   return data.job;
@@ -17,9 +17,7 @@ const Page = async ({ params }: { params: { slug: string } }) => {
   const applications = await getData(params.slug);
   return (
     <div className="col-span-5">
-      {applications.map((application) => (
-        <ViewApplication key={application.id} {...application} />
-      ))}
+      <ViewApplication key={applications.id} {...applications} />
     </div>
   );
 };

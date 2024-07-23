@@ -88,4 +88,15 @@ export const columns: ColumnDef<JobApplication>[] = [
       );
     },
   },
+  {
+    accessorKey: "status",
+    header: () => <div className="text-center">Application status</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-center items-center w-full">
+          <p>{row.getValue("status")}</p>
+        </div>
+      );
+    },
+  },
 ];

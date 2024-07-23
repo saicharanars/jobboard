@@ -9,8 +9,8 @@ import Link from "next/link";
 const Header = () => {
   return (
     <>
-      <div className="  h-12 flex justify-between align-middle content-center  bg-whilte-200 px-2 md:px-3 mr-2  sticky top-0  ">
-        <div className="  h-12 flex justify-around align-middle content-center gap-2 mr-4">
+      <div className="  h-16 flex justify-between align-middle content-center  bg-whilte-200 px-2 md:px-3 mr-2  sticky top-0  ">
+        <div className="  h-16 flex justify-around align-middle content-center gap-2 mr-4">
           <a href="/" className="flex items-center gap-2 font-semibold">
             <svg
               width="32"
@@ -46,7 +46,7 @@ const Header = () => {
             </span>
           </a>
           <Link href="/jobs">
-            <p className=" hidden md:block  text-xl text-slate-400  p-3   ">
+            <p className=" hidden md:block  text-xl text-slate-400  p-5   ">
               Find jobs
             </p>
           </Link>
@@ -54,7 +54,7 @@ const Header = () => {
             Browse Companies
           </p> */}
         </div>
-        <div className="   flex  justify-around align-middle content-center p-2 gap-5 ">
+        <div className="   flex  justify-around align-middle content-center p-5 gap-5 ">
           <Authbutton />
         </div>
       </div>
