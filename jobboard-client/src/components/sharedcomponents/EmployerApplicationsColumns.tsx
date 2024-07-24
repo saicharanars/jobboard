@@ -120,7 +120,12 @@ export const columns: ColumnDef<EmployerApplications>[] = [
       return (
         <div className=" flex justify-center w-full">
           <Link href={`${url}users/applications/${row.getValue("id")}`}>
-            <Button variant={"outline"}>view application</Button>
+            <Button
+              variant={"outline"}
+              className="text-blue-700 border-blue-500"
+            >
+              view application
+            </Button>
           </Link>
         </div>
       );
@@ -133,7 +138,12 @@ export const columns: ColumnDef<EmployerApplications>[] = [
       return (
         <div className=" flex justify-center w-full">
           <Link href={`${url}jobs/${row.original.job.id}`}>
-            <Button variant={"outline"}>view job</Button>
+            <Button
+              variant={"outline"}
+              className="text-blue-700 border-blue-500"
+            >
+              view job
+            </Button>
           </Link>
         </div>
       );

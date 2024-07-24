@@ -1,26 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
 
 import Options from "./Options";
 import { Badge } from "../ui/badge";
 import { Job } from "@/lib/types/job";
 import axios from "axios";
-import { headers } from "next/headers";
-import { useContext } from "react";
-import AuthContext from "@/lib/context/auth";
-import { useDispatch } from "react-redux";
-import { deletejobslice } from "@/lib/redux/Jobreducer";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Button } from "../ui/button";
+import { ArrowUpDown } from "lucide-react";
 const url = "http://localhost:3001/";
 const edit = () => {
   console.log("ujhh");
@@ -47,7 +34,20 @@ export const columns: ColumnDef<Job>[] = [
   },
   {
     accessorKey: "openings",
-    header: () => <div className="text-center">Openings</div>,
+    header: ({ column }) => {
+      return (
+        <div className="text-center   mx-auto">
+          <Button
+            className="text-center font-medium bg-inherit text-inherit mx-auto"
+            variant="outline"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <p> Openings</p>
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       return (
         <p className="text-center font-medium">{row.getValue("openings")}</p>

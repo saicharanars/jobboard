@@ -38,11 +38,11 @@ const Applicationsdata = () => {
   if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="container mx-auto py-2 md:py-10">
       <h1 className="text-xl md:text-2xl font-bold  capitalize my-2">
         your Applications
       </h1>
-      <DataTable columns={columns} data={applications} />
+      <DataTable columns={columns} data={applications} filters={["status"]} />
     </div>
   );
 };

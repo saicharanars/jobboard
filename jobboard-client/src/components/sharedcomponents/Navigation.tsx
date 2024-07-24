@@ -7,6 +7,7 @@ import {
   SquareDashedKanban,
   FileText,
   Power,
+  Briefcase,
 } from "lucide-react";
 import AuthCheck from "./Authcheck";
 import { useRouter } from "next/navigation";
@@ -84,6 +85,15 @@ const Navigation: React.FC = () => {
           title="Find Jobs"
           isActive={activeItem === "/jobs"}
           onClick={() => handleItemClick("/jobs")}
+        />
+      </AuthCheck>
+      <AuthCheck requiredRole="job_employer">
+        <Linkitem
+          href="/users/joblisting"
+          actionElement={<Briefcase className="h-4 w-4 mr-1" />}
+          title="Job Listing"
+          isActive={activeItem === "/users/joblisting"}
+          onClick={() => handleItemClick("/users/joblisting")}
         />
       </AuthCheck>
       <AuthCheck>

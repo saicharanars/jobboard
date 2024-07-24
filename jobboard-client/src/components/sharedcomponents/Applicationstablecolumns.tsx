@@ -52,7 +52,12 @@ export const columns: ColumnDef<JobApplication>[] = [
       return (
         <div className=" flex justify-center w-full">
           <Link href={`${url}/users/applications/${row.getValue("id")}`}>
-            <Button variant={"outline"}>view application</Button>
+            <Button
+              variant={"outline"}
+              className="text-blue-700 border-blue-500"
+            >
+              view application
+            </Button>
           </Link>
         </div>
       );
@@ -65,7 +70,12 @@ export const columns: ColumnDef<JobApplication>[] = [
       return (
         <div className=" flex justify-center w-full">
           <Link href={`${row.getValue("resume_url")}`}>
-            <Button variant={"outline"}>view resume</Button>
+            <Button
+              variant={"outline"}
+              className="text-blue-700 border-blue-500"
+            >
+              view resume
+            </Button>
           </Link>
         </div>
       );

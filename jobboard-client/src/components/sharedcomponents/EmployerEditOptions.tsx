@@ -15,12 +15,13 @@ import { deletejobslice } from "@/lib/redux/Jobreducer";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import AddJobForm from "./AddJobForm";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { EmployerApplications } from "@/lib/types/Application";
 
 interface OptionsProps {
-  item: Job;
+  item: EmployerApplications;
 }
 
-const Options: React.FC<OptionsProps> = ({ item }) => {
+const EmployerEditOptions: React.FC<OptionsProps> = ({ item }) => {
   const dispatch = useDispatch();
   const authctx = useContext(AuthContext);
   const [deleteJob] = useDeleteJobMutation();
@@ -67,4 +68,4 @@ const Options: React.FC<OptionsProps> = ({ item }) => {
   );
 };
 
-export default Options;
+export default EmployerEditOptions;

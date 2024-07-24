@@ -8,12 +8,14 @@ import CompanyApplications from "./CompanyApplications";
 const ProfilePage: React.FC = () => {
   return (
     <>
-      <AuthCheck requiredRole="job_candidate">
-        <Applications />
-      </AuthCheck>
-      <AuthCheck requiredRole="job_employer">
-        <CompanyApplications />
-      </AuthCheck>
+      <div className="bg-white rounded-md p-1 md:p-2 m-2">
+        <AuthCheck requiredRole="job_candidate">
+          <Applications />
+        </AuthCheck>
+        <AuthCheck requiredRole="job_employer">
+          <CompanyApplications />
+        </AuthCheck>
+      </div>
     </>
   );
 };
