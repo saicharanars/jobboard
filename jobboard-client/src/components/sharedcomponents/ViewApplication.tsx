@@ -15,7 +15,6 @@ const ViewApplication = (application: JobApplicationwithjob) => {
   return (
     <div>
       <h1 className="text-xl md:text-2xl font-bold capitalize p-1 md:p-4">
-        {" "}
         your Application
       </h1>
       <Card className="p-1 md:p-4 m-1 md:m-4">
@@ -38,10 +37,7 @@ const ViewApplication = (application: JobApplicationwithjob) => {
             {application.job.questions.map((question, index) => (
               <div key={index} className="grid grid-cols-1 gap-2 mb-2  ">
                 <h1>{question}</h1>
-                <CardDescription>
-
-                  {application.answers[index]}
-                </CardDescription>
+                <CardDescription>{application.answers[index]}</CardDescription>
               </div>
             ))}
           </div>

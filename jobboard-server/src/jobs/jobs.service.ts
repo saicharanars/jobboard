@@ -146,4 +146,5 @@ export class JobsService {
     const jobs = await queryBuilder.getMany();
     return jobs;
   }
+  
 }

@@ -93,7 +93,7 @@ const Browsejobs = () => {
       {/* Sidebar for md and larger screens */}
 
       {/* Main content area */}
-      <div className="col-span-5   h-screen my-3 overflow-y-auto hover:overflow-scroll">
+      <div className="col-span-5 p-1   h-screen my-3 overflow-y-auto ">
         <div className="grid grid-cols-1 md:grid-cols-4">
           <div className="hidden md:block mt-16">
             <SidebarFilters
@@ -112,7 +112,6 @@ const Browsejobs = () => {
             </Suspense>
           </div>
         </div>
-        
       </div>
     </Provider>
   );

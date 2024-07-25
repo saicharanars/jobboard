@@ -21,8 +21,8 @@ const Applicationsdata = () => {
 
   useEffect(() => {
     console.log("Fetched Applications from API:", applicationsFromApi); // Add this line
-    if (applicationsFromApi && applicationsFromApi.applications) {
-      dispatch(getapplicationslice(applicationsFromApi.applications));
+    if (applicationsFromApi) {
+      dispatch(getapplicationslice(applicationsFromApi));
     }
   }, [applicationsFromApi, dispatch]);
 

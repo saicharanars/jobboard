@@ -2,6 +2,7 @@ import { z } from "zod";
 import { jobSchema } from "./job";
 import { Joan } from "next/font/google";
 import { userschema } from "./user";
+import { type ClassValue } from "clsx";
 const addJobApplicationschema = z.object({
   //   jobId: z.string().uuid(),
   resume_url: z.string().url(),
@@ -41,6 +42,37 @@ const EmployApplicationsSchme = addJobApplicationschema.extend({
   job: Employerjob,
   user: user,
 });
+
+const statusSchma = z.object({
+  pending: z.number(),
+  inreview: z.number(),
+  shortlisted: z.number(),
+  interview: z.number(),
+  declined: z.number(),
+  hired: z.number(),
+});
+
+export interface CategoryCounts {
+  [category: string]: string; // or number, depending on your API response
+}
+export interface StatusCounts {
+  [status: string]: string; // or number, depending on your API response
+}
+export interface employercount {
+  status: StatusCounts;
+  category: CategoryCounts;
+  message: string;
+}
+export interface ApiResponse {
+  status_counts: StatusCounts;
+  message: string;
+}
+export interface ApplicationsResponse {
+  applications: JobApplication[];
+  total: number;
+  message: string;
+}
+export type status = z.infer<typeof statusSchma>;
 export type EmployerApplications = z.infer<typeof EmployApplicationsSchme>;
 
 export type employejob = z.infer<typeof jobapplicationwithemploy>;

@@ -38,18 +38,24 @@ const Applicationsdata = () => {
   if (error) return <div>An error occurred: {error.message}</div>;
 
   return (
-    <div className="container mx-auto py-2  md:py-10">
+    <div className="container  mx-auto py-2  md:py-10">
       <h1 className="text-xl md:text-2xl font-bold  capitalize my-2">
         Applications Received
       </h1>
-      <DataTable columns={columns} data={applicationsFromApi.applications} />
+      <DataTable
+        columns={columns}
+        data={applicationsFromApi.applications}
+        filters={["status"]}
+      />
     </div>
   );
 };
 const CompanyApplications = () => {
   return (
     <Provider store={store}>
-      <Applicationsdata />
+      <div className="bg-white rounded-md p-1 md:p-2 m-2">
+        <Applicationsdata />
+      </div>
     </Provider>
   );
 };

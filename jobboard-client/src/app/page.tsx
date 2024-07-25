@@ -1,12 +1,9 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import Explore from "@/components/sharedcomponents/Explore";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-    
-
-      <Button>gtjhuy</Button>
+    <main className="flex h-full flex-col items-center col-span-4 justify-between ">
+      <Explore />
     </main>
   );
 }

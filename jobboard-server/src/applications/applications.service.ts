@@ -8,7 +8,7 @@ import { CreateApplicationDto } from './dto/create-application.dto';
 import { UserTokenDto } from '../auth/dto/userTokenDto';
 import { EntityManager, Repository } from 'typeorm';
 import { User, UserRole } from '../users/entities/user.entity';
-import { Application } from './entities/application.entity';
+import { Application, statusEnum } from './entities/application.entity';
 import { JobsService } from '../jobs/jobs.service';
 import { Job } from '../jobs/entities/job.entity';
 import { ApplicationDto } from './dto/application.dto';
@@ -64,17 +64,25 @@ export class ApplicationsService {
     };
   }
 
-  async findAll(user: UserTokenDto) {
+  async findAll(user: UserTokenDto, skip?: number, take?: number) {
     console.log(user);
 
-    const applications = await this.entitymanager.find(Application, {
-      where: { user: { id: user.id } },
-      relations: ['job'],
-    });
-    console.log(applications);
+    const queryBuilder = this.entitymanager
+      .createQueryBuilder(Application, 'application')
+      .where('application.user.id = :userId', { userId: user.id })
+      .orderBy('application.createdDate', 'DESC')
+      .leftJoinAndSelect('application.job', 'job');
+
+    if (typeof skip === 'number' && typeof take === 'number') {
+      queryBuilder.skip(skip).take(take);
+    }
+
+    const [applications, total] = await queryBuilder.getManyAndCount();
+
     return {
       applications: plainToInstance(userApplicationsDto, applications),
-      message: 'sucessfuly retrieved applications',
+      total,
+      message: 'Successfully retrieved applications',
     };
   }
   async findAllApplicants(user: UserTokenDto) {
@@ -103,6 +111,8 @@ export class ApplicationsService {
         employerRole: UserRole.JOB_EMPLOYER,
       });
     const applications = await query.getMany();
+    const count = await this.countApplicationsByCategory(user.id);
+    console.log('<<<<<<<<<<', count);
 
     return {
       // applications: plainToInstance(ApplicationDto, applications),
@@ -140,5 +150,83 @@ export class ApplicationsService {
 
     const result = await this.entitymanager.remove(Application, application);
     return { message: 'Application successfully removed', result };
+  }
+  async countPending(user: UserTokenDto) {
+    const result = await this.entitymanager
+      .createQueryBuilder(Application, 'application')
+      .select('application.status', 'status')
+      .addSelect('COUNT(application.id)', 'count')
+      .where('application.userId = :userId', { userId: user.id })
+      .groupBy('application.status')
+      .getRawMany();
+    console.log(result);
+
+    const counts: Record<statusEnum, number> = Object.values(statusEnum).reduce(
+      (acc, status) => {
+        acc[status] = 0;
+        return acc;
+      },
+      {} as Record<statusEnum, number>,
+    );
+
+    result.forEach((row) => {
+      counts[row.status as statusEnum] = parseInt(row.count, 10);
+    });
+    console.log(counts);
+    return {
+      status_counts: counts,
+      message: 'sucessfuly retrieved counts',
+    };
+  }
+  async countApplicationsByCategory(employerId: string) {
+    const category = await this.entitymanager
+      .createQueryBuilder(Application, 'application')
+      .innerJoin('application.job', 'job')
+      .innerJoin('job.user', 'user')
+      .select('job.category', 'category')
+      .addSelect('COUNT(application.id)', 'count')
+      .where('user.id = :employerId', { employerId })
+      .andWhere('user.role = :role', { role: UserRole.JOB_EMPLOYER })
+      .groupBy('job.category')
+      .getRawMany();
+
+    const status = await this.entitymanager
+      .createQueryBuilder(Application, 'application')
+      .innerJoin('application.job', 'job')
+      .innerJoin('job.user', 'user')
+      .select('application.status', 'status')
+      .addSelect('COUNT(application.id)', 'count')
+      .where('user.id = :employerId', { employerId })
+      .andWhere('user.role = :role', { role: UserRole.JOB_EMPLOYER })
+      .groupBy('application.status')
+      .getRawMany();
+
+    const countstatus: Record<statusEnum, number> = Object.values(
+      statusEnum,
+    ).reduce(
+      (acc, status) => {
+        acc[status] = 0;
+        return acc;
+      },
+      {} as Record<statusEnum, number>,
+    );
+
+    status.forEach((row) => {
+      countstatus[row.status as statusEnum] = parseInt(row.count, 10);
+    });
+
+    // Convert the result to a Record<string, number>
+    const counts: Record<string, number> = {};
+    category.forEach((row) => {
+      counts[row.category] = row.count;
+    });
+
+    const result = {
+      status,
+      category,
+      message: 'received status and category counts',
+    };
+
+    return result;
   }
 }

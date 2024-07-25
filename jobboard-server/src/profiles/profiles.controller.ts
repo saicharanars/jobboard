@@ -13,14 +13,9 @@ import {
   UploadedFile,
   HttpStatus,
 } from '@nestjs/common';
-import 'multer';
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
-import {
-  fileType,
-  UpdateProfileDto,
-  uploadType,
-} from './dto/update-profile.dto';
+import { UpdateProfileDto, uploadType } from './dto/update-profile.dto';
 import { AuthGuard } from '../auth/auth.gaurd';
 import {
   ApiBody,

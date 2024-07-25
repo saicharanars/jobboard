@@ -1,7 +1,14 @@
 // lib/redux/jobsApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Job } from "../../types/job";
-import { addJobApplication, JobApplication } from "@/lib/types/Application";
+import {
+  addJobApplication,
+  ApiResponse,
+  ApplicationsResponse,
+  employercount,
+  JobApplication,
+  StatusCounts,
+} from "@/lib/types/Application";
 
 export const applicationsApi = createApi({
   reducerPath: "ApplicationsApi",
@@ -43,17 +50,26 @@ export const applicationsApi = createApi({
       }),
       invalidatesTags: ["Applications"],
     }),
-    getApplications: builder.query<JobApplication[], { token: string }>({
-      // Change the type to accept a string parameter
-      query: ({ token }) => ({
-        // Accept token as a parameter
-        url: "applications/user",
-        headers: {
-          Authorization: token, // Set the token in the headers
-        },
-        transformResponse: (response) => response.applications,
-        transformErrorResponse: (response) => response.data.message,
-      }),
+    getApplications: builder.query<
+      ApplicationsResponse,
+      { token: string; skip?: number; take?: number }
+    >({
+      query: ({ token, skip, take }) => {
+        const params = new URLSearchParams();
+        skip !== undefined && params.append("skip", skip.toString());
+        take !== undefined && params.append("take", take.toString());
+
+        return {
+          url: `applications/user?${params.toString()}`,
+          headers: {
+            Authorization: token,
+          },
+        };
+      },
+      transformResponse: (response: ApplicationsResponse) =>
+        response.applications,
+      transformErrorResponse: (response: { data: { message: string } }) =>
+        response.data.message,
     }),
 
     getApplicationsEmployer: builder.query<JobApplication[], { token: string }>(
@@ -70,6 +86,31 @@ export const applicationsApi = createApi({
         }),
       }
     ),
+    getApplicationscount: builder.query<StatusCounts, { token: string }>({
+      query: ({ token }) => ({
+        url: "applications/user/count/applicant",
+        headers: {
+          Authorization: token,
+        },
+      }),
+      transformResponse: (response: ApiResponse) => {
+        console.log("Raw API response:", response);
+        return response.status_counts;
+      },
+      transformErrorResponse: (response: { data: { message: string } }) =>
+        response.data.message,
+    }),
+    getApplicationsCategorycount: builder.query<
+      employercount,
+      { token: string }
+    >({
+      query: ({ token }) => ({
+        url: "applications/user/count/employer",
+        headers: {
+          Authorization: token,
+        },
+      }),
+    }),
   }),
 });
 
@@ -78,4 +119,6 @@ export const {
   useAddApplicationMutation,
   useGetApplicationsQuery,
   useGetApplicationsEmployerQuery,
+  useGetApplicationscountQuery,
+  useGetApplicationsCategorycountQuery,
 } = applicationsApi;

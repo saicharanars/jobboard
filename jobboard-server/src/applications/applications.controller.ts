@@ -8,6 +8,7 @@ import {
   UseGuards,
   Req,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
@@ -72,9 +73,15 @@ export class ApplicationsController {
     status: 200,
     description: 'The record has been successfully received.',
   })
-  findAll(@Req() req: Request) {
+  findAll(
+    @Req() req: Request,
+    @Query('skip') skip?: string,
+    @Query('take') take?: string,
+  ) {
     const user = req['user'];
-    return this.applicationsService.findAll(user);
+    const skipNumber = skip ? parseInt(skip, 10) : undefined;
+    const takeNumber = take ? parseInt(take, 10) : undefined;
+    return this.applicationsService.findAll(user, skipNumber, takeNumber);
   }
   @UseGuards(AuthGuard)
   @Get('employer')
@@ -146,5 +153,37 @@ export class ApplicationsController {
   remove(@Req() req: Request, @Param('id', ParseUUIDPipe) id: string) {
     const user = req['user'];
     return this.applicationsService.remove(id, user);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('user/count/applicant')
+  @ApiHeader({
+    name: 'Authorization',
+    description:
+      'authorization token like this eyJhbGciOWoidWhkdRpZGF0ZSIsImlhdCI6MTcyMDc2MTQzMCwiZXhwIjoxNzIwODQ3ODMwfQ.jGXo5HhlUZfD_R7wQXJKTanY-rCe4jYGg_hXTmpS71s',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The record has been successfully received.',
+  })
+  countapplications(@Req() req: Request) {
+    const user = req['user'];
+    return this.applicationsService.countPending(user);
+  }
+  @UseGuards(AuthGuard)
+  @Get('user/count/employer')
+  @Roles('job_employer')
+  @ApiHeader({
+    name: 'Authorization',
+    description:
+      'authorization token like this eyJhbGciOWoidWhkdRpZGF0ZSIsImlhdCI6MTcyMDc2MTQzMCwiZXhwIjoxNzIwODQ3ODMwfQ.jGXo5HhlUZfD_R7wQXJKTanY-rCe4jYGg_hXTmpS71s',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The record has been successfully received.',
+  })
+  countapplicationsCategory(@Req() req: Request) {
+    const user = req['user'];
+    return this.applicationsService.countApplicationsByCategory(user.id);
   }
 }

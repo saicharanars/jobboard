@@ -5,8 +5,6 @@ import { addJobApplication, JobApplication } from "@/lib/types/Application";
 const initialState = {
   items: [],
   editapplication: {},
-  updatebutton: false,
-  validation: {},
 };
 
 const applicationslice = createSlice({
@@ -57,19 +55,6 @@ const applicationslice = createSlice({
         editapplicationdata: null,
       };
     },
-
-    setupdatebutton: (state) => {
-      return {
-        ...state,
-        updatebutton: !state.updatebutton,
-      };
-    },
-
-    setvalidation: (state, action) => {
-      return {
-        validation: action.payload,
-      };
-    },
   },
 });
 export const {
@@ -81,5 +66,5 @@ export const {
   setupdatebutton,
   removeeditapplicationdata,
   editapplicationslice,
-} = applicationslice.actions
+} = applicationslice.actions;
 export default applicationslice;
