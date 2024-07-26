@@ -94,8 +94,8 @@ const Browsejobs = () => {
 
       {/* Main content area */}
       <div className="col-span-5 p-1   h-screen my-3 overflow-y-auto ">
-        <div className="grid grid-cols-1 md:grid-cols-4">
-          <div className="hidden md:block mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 bg-white rounded-lg">
+          <div className="hidden md:block mt-16 p-4 ">
             <SidebarFilters
               filterParams={filterParams}
               setFilterParams={setFilterParams}

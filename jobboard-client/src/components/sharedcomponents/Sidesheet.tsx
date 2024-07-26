@@ -56,7 +56,7 @@ const Sidesheet = () => {
       <Sheet>
         <SheetTrigger asChild>
           <Button variant="outline">
-            <Menu />
+            <Menu className="mr-0" />
           </Button>
         </SheetTrigger>
         <SheetContent>

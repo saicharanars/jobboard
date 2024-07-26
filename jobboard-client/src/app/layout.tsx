@@ -7,21 +7,17 @@ import Header from "@/components/sharedcomponents/Header";
 import Footer from "@/components/sharedcomponents/Footer";
 import { AuthProvider } from "../lib/context/auth";
 import AuthCheck from "@/components/sharedcomponents/Authcheck";
-import {
-  Home,
-  MessageSquareIcon,
-  Badge,
-  FileIcon,
-  SearchIcon,
-  UserIcon,
-  User2,
-  SquareDashedKanban,
-} from "lucide-react";
-import Link from "next/link";
-import Linkitem from "@/components/sharedcomponents/Linkitem";
 import Navigation from "@/components/sharedcomponents/Navigation";
+import localFont from "next/font/local";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Font files can be colocated inside of `pages`
+const myFont = localFont({
+  src: "./Clash.woff2",
+  display: "swap",
+  variable: "--font-clash",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",

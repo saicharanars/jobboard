@@ -8,6 +8,7 @@ import {
   FileText,
   Power,
   Briefcase,
+  HomeIcon,
 } from "lucide-react";
 import AuthCheck from "./Authcheck";
 import { useRouter } from "next/navigation";
@@ -60,6 +61,13 @@ const Navigation: React.FC = () => {
 
   return (
     <nav className="grid items-start px-2 gap-2 text-sm font-medium lg:px-4">
+      <Linkitem
+        href="/"
+        actionElement={<HomeIcon className="h-4 w-4 mr-1" />}
+        title="Home"
+        isActive={activeItem === "/"}
+        onClick={() => handleItemClick("/")}
+      />
       <AuthCheck>
         <Linkitem
           href="/users/dashboard"

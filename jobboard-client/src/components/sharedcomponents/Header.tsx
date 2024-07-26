@@ -9,7 +9,7 @@ import Link from "next/link";
 const Header = () => {
   return (
     <>
-      <div className="  h-16 flex justify-between align-middle content-center  bg-whilte-200 px-2 md:px-3 mr-2  sticky top-0  ">
+      <div className="  h-16 flex justify-between align-middle content-center  bg-whilte-200 px-1 md:px-3 mr-1  sticky top-0  ">
         <div className="  h-16 flex justify-around align-middle content-center gap-2 mr-4">
           <a href="/" className="flex items-center gap-2 font-semibold">
             <svg
