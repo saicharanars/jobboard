@@ -10,7 +10,6 @@ const config = {
   ],
   prefix: "",
   theme: {
-    
     container: {
       center: true,
       padding: "2rem",
@@ -32,6 +31,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      fontFamily: {
+        clash: ["var(--font-clash)"],
       },
     },
   },
