@@ -12,3 +12,4 @@ jobboard-server/node_modules
 ecommerce/
 video/
 video/remotion/
+.gitignore
