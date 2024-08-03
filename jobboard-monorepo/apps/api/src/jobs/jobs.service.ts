@@ -12,6 +12,7 @@ import { plainToClass } from 'class-transformer';
 import { JobDto } from './dto/job.dto';
 import { User } from '../users/entities/user.entity';
 import { FilterDto } from './dto/filter.dto';
+import { JobsDto } from './dto/jobs.dto';
 
 @Injectable()
 export class JobsService {
@@ -58,7 +59,6 @@ export class JobsService {
       where: {
         id: jobid,
       },
-      
     });
     if (!job) {
       throw new NotFoundException('Job with this id is not found');
@@ -142,9 +142,22 @@ export class JobsService {
         location: params.location,
       });
     }
+    if (params.skip) {
+      queryBuilder.skip(params.skip);
+    }
+    if (params.take) {
+      queryBuilder.take(params.take);
+    }
+    const totaljobs = await queryBuilder.getCount();
 
     const jobs = await queryBuilder.getMany();
-    return jobs;
+    const res = {
+      jobs: jobs,
+      totaljobs: totaljobs,
+    };
+    return {
+      data: plainToClass(JobsDto, res),
+      message: 'Successfully added job',
+    };
   }
-  
 }

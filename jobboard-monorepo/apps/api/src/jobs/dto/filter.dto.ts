@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsEnum, IsOptional } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
@@ -5,16 +6,6 @@ import { ApiProperty } from '@nestjs/swagger';
 export enum SortEnum {
   ASC = 'ASC',
   DESC = 'DESC',
-}
-
-export enum CategoryEnum {
-  JAVA = 'java',
-  PYTHON = 'python',
-}
-
-export enum LocationEnum {
-  HYDERABAD = 'hyderabad',
-  BANGALORE = 'bangalore',
 }
 
 export class FilterDto {
@@ -27,18 +18,27 @@ export class FilterDto {
   sort?: SortEnum;
 
   @IsOptional()
-  @IsEnum(CategoryEnum)
   @Transform(({ value }) => value?.toLowerCase())
   @ApiProperty({
     description: 'CHOOSE A CATEGORY',
   })
-  category?: CategoryEnum;
+  category?: string;
 
   @IsOptional()
-  @IsEnum(LocationEnum)
   @Transform(({ value }) => value?.toLowerCase())
   @ApiProperty({
     description: 'location',
   })
-  location?: LocationEnum;
+  location?: string;
+
+  @IsOptional()
+  @ApiProperty({
+    description: 'skip items',
+  })
+  skip?: number;
+  @IsOptional()
+  @ApiProperty({
+    description: 'total items',
+  })
+  take?: number;
 }

@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={`${myFont.variable} `}>
+      <body className={`${inter.className} `}>
         <AuthProvider>
           <Header />
           <div className="grid grid-cols-5 grid-flow-col bg-[#E9EBFD] h-full gap-2 pt-4">
@@ -42,11 +42,10 @@ export default function RootLayout({
                 </div>
               </div>
             </AuthCheck>
-            <div className="col-span-5 md:col-span-5 bg-[#E9EBFD] h-full">
+            <div className="col-span-5 md:col-span-5 bg-[#E9EBFD] h-full overflow-scroll">
               {children}
             </div>
           </div>
-
           <Footer />
         </AuthProvider>
       </body>

@@ -15,6 +15,31 @@ interface SidebarFiltersProps {
   filterParams: FilterParams;
   setFilterParams: (params: FilterParams) => void;
 }
+const categories = [
+  "python",
+  "java",
+  "Sales",
+  "Design",
+  "Marketing",
+  "Finance",
+  "Technology",
+  "Engineering",
+  "Business",
+  "Human resources",
+];
+
+const locations = [
+  "Hyderabad",
+  "Chennai",
+  "Delhi",
+  "Bangalore",
+  "Mumbai",
+  "Ahmedabad",
+  "Kolkata",
+  "Gurgaon",
+  "Mohali",
+  "Navi Mumbai",
+];
 
 const SidebarFilters: React.FC<SidebarFiltersProps> = ({
   filterParams,
@@ -45,8 +70,11 @@ const SidebarFilters: React.FC<SidebarFiltersProps> = ({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All categories</SelectItem>
-            <SelectItem value="python">Python</SelectItem>
-            <SelectItem value="java">Java</SelectItem>
+            {categories.map((item, index) => (
+              <SelectItem key={index} value={item}>
+                {item}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -59,8 +87,11 @@ const SidebarFilters: React.FC<SidebarFiltersProps> = ({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All locations</SelectItem>
-            <SelectItem value="hyderabad">Hyderabad</SelectItem>
-            <SelectItem value="bangalore">Bangalore</SelectItem>
+            {locations.map((item, index) => (
+              <SelectItem key={index} value={item}>
+                {item}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

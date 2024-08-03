@@ -4,8 +4,6 @@ import { Job, addJob, employerJobsResponse } from "../types/job";
 import { AddJobResponse } from "../types/Application";
 const url = "https://jobboard-4945.onrender.com/";
 
-
-
 export const jobsApi = createApi({
   reducerPath: "jobsApi",
   baseQuery: fetchBaseQuery({

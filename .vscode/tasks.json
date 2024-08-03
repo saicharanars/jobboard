@@ -1,0 +1,59 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "client",
+            "type": "shell",
+            "command": "cd jobboard-client && pnpm run dev",
+            "isBackground": true,
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": "^started server on .+, url: .+$",
+                        "endsPattern": "^(?!Compiling\\.\\.\\.)(?!\\[Log\\])."
+                    }
+                }
+            ]
+        },
+        {
+            "label": "server",
+            "type": "shell",
+            "command": "cd jobboard-server && pnpm run dev",
+            "isBackground": true,
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": "^\\[Nest\\] .+ - .+$",
+                        "endsPattern": "^\\[Nest\\] .+ - Nest application successfully started$"
+                    }
+                }
+            ]
+        },
+        {
+            "label": "Start Both Apps",
+            "dependsOn": [
+                "client",
+                "server"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

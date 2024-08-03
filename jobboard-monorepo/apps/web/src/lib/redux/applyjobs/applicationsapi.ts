@@ -10,6 +10,15 @@ import {
   statusResponse,
 } from "@/lib/types/Application";
 const url = "https://jobboard-4945.onrender.com/";
+// const url = "http://localhost:3001/";
+
+interface jobsresponse {
+  data: {
+    jobs: Job[];
+    totaljobs: number;
+  };
+  message: string;
+}
 
 export const applicationsApi = createApi({
   reducerPath: "ApplicationsApi",
@@ -21,18 +30,30 @@ export const applicationsApi = createApi({
   }),
   tagTypes: ["Applications"],
   endpoints: (builder) => ({
-    getJobsForall: builder.query<
-      Job[],
-      { sortdate?: string; category?: string; location?: string }
+    getJobsForAll: builder.query<
+      jobsresponse,
+      {
+        sortdate?: string;
+        category?: string;
+        location?: string;
+        skip?: number;
+        take?: number;
+      }
     >({
       query: (params) => {
-        const queryParams = new URLSearchParams();
-        if (params.sortdate) queryParams.append("sortdate", params.sortdate);
-        if (params.category) queryParams.append("category", params.category);
-        if (params.location) queryParams.append("location", params.location);
-
+        const queryParams: Record<string, string | number> = {};
+        if (params.sortdate) queryParams.sortdate = params.sortdate;
+        if (params.category) queryParams.category = params.category;
+        if (params.location) queryParams.location = params.location;
+        if (params.skip !== undefined) queryParams.skip = params.skip;
+        const queryString = Object.entries(queryParams)
+          .map(
+            ([key, value]) =>
+              `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+          )
+          .join("&");
         return {
-          url: `/jobs?${queryParams.toString()}`,
+          url: `jobs?${queryString}&take=${params?.take || 10}`,
           method: "GET",
         };
       },
@@ -68,7 +89,6 @@ export const applicationsApi = createApi({
         };
       },
       transformResponse: (response: ApplicationsResponse) => response,
-      
     }),
 
     getApplicationsEmployer: builder.query<
@@ -128,7 +148,7 @@ export const applicationsApi = createApi({
 });
 
 export const {
-  useGetJobsForallQuery,
+  useGetJobsForAllQuery,
   useAddApplicationMutation,
   useGetApplicationsQuery,
   useGetApplicationsEmployerQuery,
