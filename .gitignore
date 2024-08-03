@@ -9,7 +9,7 @@ jobboard-monorepo/apps/web/node_modules/
 
 jobboard-monorepo/.nx/cache
 jobboard-monorepo/.nx/workspace-data
-
+.vscode/
 # Next.js
 jobboard-monorepo/.next
 jobboard-monorepo/out

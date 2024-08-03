@@ -18,14 +18,12 @@ export class FilterDto {
   sort?: SortEnum;
 
   @IsOptional()
-  @Transform(({ value }) => value?.toLowerCase())
   @ApiProperty({
     description: 'CHOOSE A CATEGORY',
   })
   category?: string;
 
   @IsOptional()
-  @Transform(({ value }) => value?.toLowerCase())
   @ApiProperty({
     description: 'location',
   })
