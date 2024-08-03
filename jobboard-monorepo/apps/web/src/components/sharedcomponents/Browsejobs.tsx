@@ -64,7 +64,8 @@ const JobList: React.FC<JobListProps> = ({ filterParams, setFilterParams }) => {
       </div>
     );
   if (error) return <div>Error loading jobs</div>;
-  if (!jobsFromApi || jobsFromApi.length === 0) return <div>No jobs found</div>;
+  if (!jobsFromApi || jobsFromApi.data.jobs.length === 0)
+    return <div>No jobs found</div>;
 
   const DialogFilters = () => (
     <Dialog>
