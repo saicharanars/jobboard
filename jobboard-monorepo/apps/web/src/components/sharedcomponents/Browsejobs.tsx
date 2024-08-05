@@ -172,7 +172,7 @@ const BrowsejobsContent: React.FC = () => {
   };
 
   return (
-    <div className="col-span-5 p-1 h-screen my-3 overflow-y-auto">
+    <div className="col-span-5 p-1 h-screen my-3 ">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2 bg-white rounded-lg">
         <div className="hidden md:block mt-16 p-4">
           <SidebarFilters
@@ -188,38 +188,38 @@ const BrowsejobsContent: React.FC = () => {
               filterParams={filterParams}
               setFilterParams={setFilterParams}
             />
-            <div className="w-full mt-4 p-4 m-2">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handlePrevious();
-                      }}
-                    />
-                  </PaginationItem>
-                  {renderPageNumbers()}
-                  {currentPage < totalPages - 2 && (
-                    <PaginationItem>
-                      <PaginationEllipsis />
-                    </PaginationItem>
-                  )}
-
-                  <PaginationItem>
-                    <PaginationNext
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleNext();
-                      }}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
           </Suspense>
+          <div className="w-full mt-4 p-4 m-2">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePrevious();
+                    }}
+                  />
+                </PaginationItem>
+                {renderPageNumbers()}
+                {currentPage < totalPages - 2 && (
+                  <PaginationItem>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                )}
+
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNext();
+                    }}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </div>
       </div>
     </div>

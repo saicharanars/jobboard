@@ -41,7 +41,7 @@ const Header = () => {
               </defs>
             </svg>
 
-            <span className="  text-xl md:text-2xl font-bold text-[#202430]">
+            <span className="  text-xl font-clash md:text-2xl font-bold text-[#202430]">
               JobHuntly
             </span>
           </a>

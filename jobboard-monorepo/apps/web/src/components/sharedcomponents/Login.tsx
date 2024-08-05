@@ -1,3 +1,4 @@
+"use client";
 import img from "/public/Element.png";
 import Authform from "./Authform";
 import Image from "next/image";
@@ -5,12 +6,9 @@ import Image from "next/image";
 const Login = () => {
   return (
     <>
-        
-        <div className="p-1 col-span-5 md:px-4 container my-2 max-w-sm">
-          <Authform />
-        </div>
-        
-      
+      <div className="p-1 col-span-5 md:px-4 container my-2 max-w-sm">
+        <Authform />
+      </div>
     </>
   );
 };

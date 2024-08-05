@@ -6,7 +6,7 @@ const Footer = () => {
   const resources = ["help docs", "guide", "updates", "contact us"];
   return (
     <>
-      <div className="bg-slate-800  ">
+      <div className="bg-slate-800 mt-2  ">
         <div className="grid grid-cols-2 md:grid-cols-4">
           <div className="flex justify-start flex-col align-middle content-center p-6">
             <h1 className="text-2xl text-bold text-white ">JobHuntly</h1>

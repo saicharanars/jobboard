@@ -1,10 +1,10 @@
-import Login from "@/components/sharedcomponents/Login";
 import { Suspense } from "react";
+import ClientAuthHandler from "./ClientAuthHandler";
 
-export default function page() {
+export default function Page() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Login />
+      <ClientAuthHandler />
     </Suspense>
   );
 }

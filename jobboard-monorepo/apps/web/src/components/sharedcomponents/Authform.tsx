@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 
 import { signupSchema, loginSchema, signup, login } from "@/lib/types/user";
 import { LoaderCircle } from "lucide-react";
+import GoogleLogin from "./GoogleLogin";
 
 const Authform = () => {
   const router = useRouter();
@@ -69,7 +70,7 @@ const Authform = () => {
       setTimeout(() => {
         setSignupstatus(false);
       }, 5000);
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error);
       setErr(error.response.data.message);
       setTimeout(() => {
@@ -89,7 +90,7 @@ const Authform = () => {
       console.log(loginResponse.data);
       authctx.login(loginResponse.data.access_token);
       router.push("/");
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error);
       if (error.response) {
         setErr(error.response.data.message);
@@ -112,8 +113,9 @@ const Authform = () => {
       </TabsList>
       <TabsContent value="signup">
         <Card>
-          <CardHeader className="text-center">
+          <CardHeader className="text-center flex flex-col items-center gap-2 px-0">
             <CardTitle>Get More Opportunities</CardTitle>
+            <GoogleLogin />
           </CardHeader>
           <CardContent className="space-y-1">
             <Form {...signupform}>
@@ -215,8 +217,9 @@ const Authform = () => {
       </TabsContent>
       <TabsContent value="login">
         <Card>
-          <CardHeader className="text-center">
+          <CardHeader className="text-center flex flex-col items-center gap-2 w-full">
             <CardTitle>Welcome Back</CardTitle>
+            <GoogleLogin />
           </CardHeader>
           <CardContent>
             <Form {...loginform}>

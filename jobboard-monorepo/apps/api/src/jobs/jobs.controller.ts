@@ -18,11 +18,16 @@ import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { AuthGuard, Roles } from '../auth/auth.gaurd';
 import { FilterDto } from './dto/filter.dto';
-import { ApiBody, ApiHeader, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiHeader,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('jobs')
 @ApiTags('jobs')
-
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
   @UseGuards(AuthGuard)

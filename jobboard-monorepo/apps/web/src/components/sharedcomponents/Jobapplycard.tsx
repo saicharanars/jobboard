@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
@@ -19,10 +20,13 @@ const Jobapplycard: React.FC<jobcard> = (jobcard) => {
           <CardContent className="max-h-54 flex flex-col   justify-around items-between py-1 p-2 w-full">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="col-span-1 md:col-span-3 px-1 md:px-5 ">
-                <div className="flex flex-col justify-center gap-2 my-2 flex-grow">
+                <div className="flex flex-col justify-center gap-3 my-2 flex-grow">
                   <h1 className="font-bold sm:text-xl capitalize md:text-2xl">
                     {jobcard.job_role}
                   </h1>
+                  <p className="text-sm line-clamp-3 capitalize text-gray-400">
+                    {jobcard.description}
+                  </p>
                   <p className="text-sm line-clamp-3 capitalize text-gray-400">
                     {jobcard.location}
                   </p>
