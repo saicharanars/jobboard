@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { addprofile } from "../../types/user";
 
 // Define the necessary TypeScript interfaces
 interface SocialLinks {
@@ -31,7 +32,7 @@ interface UserProfile {
 }
 
 interface GetProfileResponse {
-  profile: UserProfile;
+  user: UserProfile;
   message: string;
 }
 
@@ -51,9 +52,16 @@ interface EditProfileResponse {
   profile: ProfileDetails;
   message: string;
 }
+export interface profileErrorResponse {
+  status: number;
+  data: {
+    message: string;
+    error: string;
+    statusCode: number;
+  };
+}
 
-// Define the API URL
-const url = "https://jobboard-4945.onrender.com/";
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const profileApi = createApi({
   reducerPath: "profileApi",
@@ -73,7 +81,10 @@ export const profileApi = createApi({
         },
       }),
       transformResponse: (response: GetProfileResponse): UserProfile => {
-        return response.profile;
+        return response.user;
+      },
+      transformErrorResponse: (response: profileErrorResponse) => {
+        return response.data.message;
       },
     }),
 
@@ -85,6 +96,23 @@ export const profileApi = createApi({
         url: "profiles",
         method: "PATCH",
         body: editProfile,
+        headers: {
+          Authorization: token,
+        },
+      }),
+      invalidatesTags: ["profile"],
+      transformResponse: (response: EditProfileResponse): ProfileDetails =>
+        response.profile,
+      transformErrorResponse: (response: any) => response.data.message,
+    }),
+    addProfile: builder.mutation<
+      ProfileDetails, // Correct type here
+      { Addprofile: addprofile; token: string }
+    >({
+      query: ({ Addprofile, token }) => ({
+        url: "profiles",
+        method: "POST",
+        body: Addprofile,
         headers: {
           Authorization: token,
         },
@@ -129,5 +157,6 @@ export const profileApi = createApi({
 export const {
   useGetProfileQuery,
   useEditProfileMutation,
+  useAddProfileMutation,
   useUploadProfilePhotoMutation,
 } = profileApi;

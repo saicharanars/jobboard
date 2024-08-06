@@ -1,5 +1,5 @@
 import Job from "@/components/sharedcomponents/Job";
-const url = "https://jobboard-4945.onrender.com/";
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 async function getData(id: string) {
   const res = await fetch(`${url}jobs/${id}`);

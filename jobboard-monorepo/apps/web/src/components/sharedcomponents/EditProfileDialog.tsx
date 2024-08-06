@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,18 +8,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ProfileForm from "./Profileform";
 import { editprofile } from "@/lib/types/user";
+import { EditProfileForm } from "./Profileform";
 const EditProfileDialog: React.FC<{ profile: editprofile }> = ({ profile }) => {
+  const [receivedprofile, Setreceievedprofile] = useState<editprofile>({
+    description: "",
+    date_of_birth: "",
+    location: "",
+    sociallinks: {
+      linkedin: "",
+      github: "",
+      website: "",
+    },
+  });
   {
     if (profile) {
-      const { description, date_of_birth, location, sociallinks } = profile;
-      const editprofileobject = {
-        description,
-        date_of_birth,
-        location,
-        sociallinks,
-      };
+      Setreceievedprofile(profile);
     }
   }
   return (
@@ -35,7 +39,7 @@ const EditProfileDialog: React.FC<{ profile: editprofile }> = ({ profile }) => {
             you`&apos;`re done.
           </DialogDescription>
         </DialogHeader>
-        <ProfileForm />
+        <EditProfileForm profile={profile} />
       </DialogContent>
     </Dialog>
   );

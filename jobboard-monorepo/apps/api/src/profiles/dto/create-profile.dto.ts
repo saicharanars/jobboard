@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import {
-  IsDate,
-  IsObject,
-  IsOptional,
-  IsString,
+  IsNotEmpty,
+  IsISO8601,
   IsUrl,
+  IsString,
+  IsOptional,
   MinLength,
 } from 'class-validator';
 
 export class CreateProfileDto {
+  @IsNotEmpty()
   @IsString()
   @MinLength(50)
   @ApiProperty()
@@ -17,37 +17,39 @@ export class CreateProfileDto {
     description: 'Description of the profile',
   })
   description: string;
-  @IsDate()
-  @Type(() => Date)
+
+  @IsISO8601()
   @ApiProperty()
   @ApiProperty({
     description: 'Date of birth',
   })
-  date_of_birth: Date;
+  date_of_birth: string;
+
+  @IsUrl()
   @ApiProperty()
   @ApiProperty({
-    description: 'url of resume',
+    description: 'resume link',
   })
-  @IsUrl()
   resume_url: string;
-  @IsOptional()
+
   @IsUrl()
   @ApiProperty()
   @ApiProperty({
-    description: 'url of profile picture',
+    description: 'profile photo link',
   })
   profile_picture_url: string;
+
   @IsString()
   @ApiProperty()
   @ApiProperty({
     description: 'Location of the profile',
   })
   location: string;
-  @IsObject()
+
   @IsOptional()
-  @ApiProperty()
-  @ApiProperty({
-    description: 'social media links',
-  })
-  sociallinks: { linkedin: string; github: string; website: string };
+  sociallinks?: {
+    linkedin?: string;
+    github?: string;
+    website?: string;
+  };
 }

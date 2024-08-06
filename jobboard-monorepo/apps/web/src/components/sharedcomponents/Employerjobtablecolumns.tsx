@@ -7,7 +7,8 @@ import { Badge } from "../ui/badge";
 import { Job } from "@/lib/types/job";
 import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
-const url = "https://jobboard-4945.onrender.com/";
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 // const edit = () => {
 //   console.log("ujhh");
 // };

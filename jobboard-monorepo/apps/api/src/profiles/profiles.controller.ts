@@ -12,6 +12,8 @@ import {
   UseInterceptors,
   UploadedFile,
   HttpStatus,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
@@ -54,9 +56,12 @@ export class ProfilesController {
     status: 401,
     description: 'Unauthorized access ',
   })
-  create(@Body() createProfileDto: CreateProfileDto, @Req() req: Request) {
-    const user = req['user']; // This is where the user information is stored by AuthGuard
-    console.log('User creating job:', user);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(
+    @Req() req: Request,
+    @Body() createProfileDto: CreateProfileDto,
+  ) {
+    const user = req['user'];
     return this.profilesService.create(createProfileDto, user);
   }
 
@@ -122,7 +127,7 @@ export class ProfilesController {
     status: 404,
     description: 'not found user or profile ',
   })
-  update(@Body() updateProfileDto: UpdateProfileDto, @Req() req: Request) {
+  update(@Req() req: Request, @Body() updateProfileDto: UpdateProfileDto) {
     const user = req['user'];
     console.log('User creating job:', user);
     return this.profilesService.update(user.id, updateProfileDto);

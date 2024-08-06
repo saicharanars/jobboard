@@ -5,7 +5,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { JobApplication } from "@/lib/types/Application";
-const url = "https://jobboard-4945.onrender.com/";
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 
 export const columns: ColumnDef<JobApplication>[] = [
   {

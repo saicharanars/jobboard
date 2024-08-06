@@ -14,6 +14,7 @@ const signupSchema = z.object({
       message: "Password must not be more than 20 characters.",
     }),
   mobile_number: z.coerce.number(),
+  role: z.enum(["job_candidate", "job_employer"]),
 });
 
 const loginSchema = z.object({
@@ -31,7 +32,14 @@ const loginSchema = z.object({
 const profileSchema = z.object({
   id: z.string().uuid(),
   description: z.string(),
-  date_of_birth: z.string().datetime(),
+  date_of_birth: z.string().refine(
+    (date) => {
+      return !isNaN(Date.parse(date)); // Ensure the date string is valid
+    },
+    {
+      message: "Invalid date format",
+    }
+  ),
   resume_url: z.string().url(),
   profile_picture_url: z.string().url(),
   location: z.string(),
@@ -56,6 +64,26 @@ const editprofileschema = profileSchema.pick({
   location: true,
   sociallinks: true,
 });
+export const addprofileschema = z.object({
+  description: z
+    .string()
+    .min(30, "Description must be at least 50 characters long"),
+  date_of_birth: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), "Invalid date format"),
+  resume_url: z.string().url("Invalid URL format"),
+  profile_picture_url: z.string().url("Invalid URL format").optional(),
+  location: z.string(),
+  sociallinks: z
+    .object({
+      linkedin: z.string().url("Invalid URL format").optional(),
+      github: z.string().url("Invalid URL format").optional(),
+      website: z.string().url("Invalid URL format").optional(),
+    })
+    .optional(),
+});
+
+export type addprofile = z.infer<typeof addprofileschema>;
 
 const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = [

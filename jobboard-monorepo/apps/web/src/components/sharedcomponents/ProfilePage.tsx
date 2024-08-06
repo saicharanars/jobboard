@@ -9,7 +9,13 @@ import AuthCheck from "./Authcheck";
 import { useGetProfileQuery } from "@/lib/redux/profile/profileapi";
 import { setProfile, setUser } from "@/lib/redux/profile/profilereducer";
 import { useProfileDispatch } from "@/lib/redux/profile/profilehooks";
-import { profile } from "@/lib/types/user";
+import { editprofile, profile } from "@/lib/types/user";
+import UpdateProfilebutton from "./UpdateProfilebutton";
+import AddProfile from "./AddProfile";
+interface Error {
+  statusCode: number;
+  message: string;
+}
 
 const ProfilePage: React.FC = () => {
   const authCtx = useContext(AuthContext);
@@ -49,7 +55,18 @@ const ProfilePage: React.FC = () => {
   }
 
   if (error) {
-    return <div>An error occurred: {JSON.stringify(error)}</div>;
+    const err = error as Error;
+    switch (err.statusCode) {
+      case 404:
+        console.log("Not found");
+        return <AddProfile />;
+        break;
+      case 500:
+        console.log("Unexpected error");
+        return <div>unepected behaviour from server</div>;
+        break;
+    }
+    return;
   }
 
   return (
@@ -59,7 +76,6 @@ const ProfilePage: React.FC = () => {
       </AuthCheck>
       <AuthCheck requiredRole="job_employer">
         <CompanyProfile />
-        {/* <div>hello</div> */}
       </AuthCheck>
     </>
   );

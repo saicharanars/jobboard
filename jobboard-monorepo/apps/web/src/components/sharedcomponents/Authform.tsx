@@ -29,6 +29,13 @@ import { useRouter } from "next/navigation";
 import { signupSchema, loginSchema, signup, login } from "@/lib/types/user";
 import { LoaderCircle } from "lucide-react";
 import GoogleLogin from "./GoogleLogin";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const Authform = () => {
   const router = useRouter();
@@ -36,7 +43,8 @@ const Authform = () => {
   const [loading, setLoading] = useState(false);
   const [signupstatus, setSignupstatus] = useState(false);
   const [err, setErr] = useState("");
-  const url = "https://jobboard-4945.onrender.com/";
+  const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   // State to manage loading
   const signupform = useForm<signup>({
     resolver: zodResolver(signupSchema),
@@ -45,6 +53,7 @@ const Authform = () => {
       mobile_number: 12345678,
       email: "",
       password: "",
+      role: "job_candidate",
     },
   });
   const loginform = useForm<login>({
@@ -113,7 +122,7 @@ const Authform = () => {
       </TabsList>
       <TabsContent value="signup">
         <Card>
-          <CardHeader className="text-center flex flex-col items-center gap-2 px-0">
+          <CardHeader className="text-center flex flex-col items-center gap-3 px-0">
             <CardTitle>Get More Opportunities</CardTitle>
             <GoogleLogin />
           </CardHeader>
@@ -161,6 +170,31 @@ const Authform = () => {
                       <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter your email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={signupform.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>role</FormLabel>
+                      <FormControl>
+                        <Select>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="job_candidate">
+                              job seeker
+                            </SelectItem>
+                            <SelectItem value="job_employer">
+                              Employer
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

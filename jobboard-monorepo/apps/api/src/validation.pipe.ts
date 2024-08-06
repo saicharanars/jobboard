@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   PipeTransform,
   Injectable,
@@ -14,9 +15,11 @@ export class ValidationPipe implements PipeTransform<any> {
       return value;
     }
     const object = plainToInstance(metatype, value);
+    console.log('Transformed object:', object); // Add this line
     const errors = await validate(object);
+    console.log(errors);
     if (errors.length > 0) {
-      console.log(errors)  
+      console.log(errors);
       throw new BadRequestException('Validation failed');
     }
     return value;

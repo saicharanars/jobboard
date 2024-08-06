@@ -1,32 +1,16 @@
 import { Pencil } from "lucide-react";
 import React from "react";
-import { Card, CardContent } from "../ui/card";
-import SectionHeader from "./SectionHeader";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "../ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFieldArray } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import ProfileForm from "./Profileform";
 import { editprofile } from "@/lib/types/user";
+import { EditProfileForm } from "./Profileform";
 
 const DialogDemo: React.FC<{ profile: editprofile }> = ({ profile }) => {
   {
@@ -55,7 +39,7 @@ const DialogDemo: React.FC<{ profile: editprofile }> = ({ profile }) => {
             you`&apos;`re done.
           </DialogDescription>
         </DialogHeader>
-        <ProfileForm profile={profile} />
+        <EditProfileForm profile={profile} />
       </DialogContent>
     </Dialog>
   );

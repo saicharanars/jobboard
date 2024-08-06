@@ -6,8 +6,7 @@ import { Button } from "../ui/button";
 // Define types for user and error
 
 const GoogleLogin: React.FC = () => {
-  // const url = "http://localhost:3001/";
-  const url = "https://jobboard-4945.onrender.com/";
+  const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const handleGoogleLogin = () => {
     window.location.href = `${url}auth/google`;

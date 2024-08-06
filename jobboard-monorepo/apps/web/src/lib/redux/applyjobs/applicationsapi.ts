@@ -9,8 +9,7 @@ import {
   StatusCounts,
   statusResponse,
 } from "@/lib/types/Application";
-const url = "https://jobboard-4945.onrender.com/";
-// const url = "http://localhost:3001/";
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 interface jobsresponse {
   data: {

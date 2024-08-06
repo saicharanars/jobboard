@@ -1,6 +1,6 @@
 import ViewApplication from "@/components/sharedcomponents/ViewApplication";
 import { JobApplicationWithJob } from "@/lib/types/Application";
-const url = "https://jobboard-4945.onrender.com/";
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 async function getData(id: string): Promise<JobApplicationWithJob> {
   const res = await fetch(`${url}applications/${id}`);

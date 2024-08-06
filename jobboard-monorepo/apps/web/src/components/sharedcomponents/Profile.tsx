@@ -7,7 +7,7 @@ import {
   Pencil,
   PhoneIcon,
 } from "lucide-react";
-import React, {  } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import SectionHeader from "./SectionHeader";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
