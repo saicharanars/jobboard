@@ -9,6 +9,9 @@ import {
   Req,
   ParseUUIDPipe,
   Query,
+  Patch,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
@@ -20,6 +23,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UpdateApplicationDto } from './dto/update-application.dto';
 
 @Controller('applications')
 @ApiTags('applications')
@@ -185,5 +189,31 @@ export class ApplicationsController {
   countapplicationsCategory(@Req() req: Request) {
     const user = req['user'];
     return this.applicationsService.countApplicationsByCategory(user.id);
+  }
+  @UseGuards(AuthGuard)
+  @Patch(':id')
+  @Roles('job_employer')
+  @ApiHeader({
+    name: 'Authorization',
+    description:
+      'authorization token like this eyJhbGciOWoidWhkdRpZGF0ZSIsImlhdCI6MTcyMDc2MTQzMCwiZXhwIjoxNzIwODQ3ODMwfQ.jGXo5HhlUZfD_R7wQXJKTanY-rCe4jYGg_hXTmpS71s',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The record has been successfully received.',
+  })
+  @UsePipes(new ValidationPipe({ transform: true }))
+  update(
+    @Req() req: Request,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updatApplicationDto: UpdateApplicationDto,
+  ) {
+    const user = req['user']; // This is where the user information is stored by AuthGuard
+    console.log('User creating job:', user, updatApplicationDto, id);
+    return this.applicationsService.updateapplication(
+      user,
+      updatApplicationDto,
+      id,
+    );
   }
 }

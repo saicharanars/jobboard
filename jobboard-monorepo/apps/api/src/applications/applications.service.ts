@@ -3,6 +3,7 @@ import {
   Injectable,
   NotAcceptableException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UserTokenDto } from '../auth/dto/userTokenDto';
@@ -15,12 +16,16 @@ import { ApplicationDto } from './dto/application.dto';
 import { plainToClass, plainToInstance } from 'class-transformer';
 import { userApplicationsDto } from './dto/userapplication.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateApplicationDto } from './dto/update-application.dto';
+import { EventsGateway } from '../events/events.gateway';
+import { UpdateEventDto } from '../events/dto/update-event.dto';
 
 @Injectable()
 export class ApplicationsService {
   constructor(
     private readonly entitymanager: EntityManager,
     private readonly jobsService: JobsService,
+    private readonly eventsservice: EventsGateway,
     @InjectRepository(Application)
     private applicationRepository: Repository<Application>,
   ) {}
@@ -228,5 +233,37 @@ export class ApplicationsService {
     };
 
     return result;
+  }
+  async updateapplication(
+    employer: UserTokenDto,
+    updatApplicationDto: UpdateApplicationDto,
+    applicationid: string,
+  ) {
+    const application = await this.entitymanager.findOne(Application, {
+      where: {
+        id: applicationid,
+      },
+      relations: ['job', 'job.user', 'user', 'job.user.profile'],
+    });
+    const applicant = application.user.id;
+    if (application.job.user.id !== employer.id) {
+      throw new UnauthorizedException('you are not authoized to update');
+    }
+    Object.assign(application, updatApplicationDto);
+
+    // Save the updated application
+    const updatedApplication =
+      await this.applicationRepository.save(application);
+    console.log(updatedApplication, 'from application service');
+    const updateevent: UpdateEventDto = {
+      clientid: applicant,
+      message: `your application to ${application.job.job_role} has been updated`,
+      name: `${application.job.user.name}`,
+    };
+    await this.eventsservice.emitApplicationUpdated(updateevent);
+    return {
+      application: plainToClass(ApplicationDto, updatedApplication),
+      message: 'Successfully updated application',
+    };
   }
 }

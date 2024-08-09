@@ -7,6 +7,17 @@ const addJobApplicationschema = z.object({
   resume_url: z.string().url(),
   answers: z.array(z.string()),
 });
+const ApplicationSchema = addJobApplicationschema.extend({
+  status: z.enum([
+    "pending",
+    "inreview",
+    "shortlisted",
+    "interview",
+    "declined",
+    "hired",
+  ]),
+});
+const updateApplicationSchema = ApplicationSchema.partial();
 
 const JobApplicationschema = addJobApplicationschema.extend({
   id: z.string().uuid(),
@@ -96,6 +107,8 @@ export type EmployerApplications = z.infer<typeof EmployApplicationsSchme>;
 export type EmployeeJob = z.infer<typeof jobapplicationwithemploy>;
 export type JobApplicationWithJob = z.infer<typeof JobApplicationwithjobschema>;
 export type AddJobApplication = z.infer<typeof addJobApplicationschema>;
+export type updateJobApplication = z.infer<typeof updateApplicationSchema>;
+
 export type JobApplication = z.infer<typeof JobApplicationschema>;
 
 export {

@@ -1,9 +1,5 @@
-import { Button } from "../ui/button";
 import Authbutton from "./AuthButton";
 // import Heading from "./Heading";
-import Sidesheet from "./Sidesheet";
-import Checkuser from "./Checkuser";
-import Authcheck from "./Authcheck";
 import Link from "next/link";
 
 const Header = () => {
@@ -50,11 +46,11 @@ const Header = () => {
               Find jobs
             </p>
           </Link>
-          {/* <p className=" hidden md:block  text-xl text-slate-400  p-3  ">
-            Browse Companies
-          </p> */}
         </div>
         <div className="   flex  justify-around align-middle content-center p-5 gap-5 ">
+          {/* <Authcheck>
+            <Mysocket />
+          </Authcheck> */}
           <Authbutton />
         </div>
       </div>

@@ -8,6 +8,7 @@ import {
   EmployerApplicationsResponse,
   StatusCounts,
   statusResponse,
+  updateJobApplication,
 } from "@/lib/types/Application";
 const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -143,6 +144,27 @@ export const applicationsApi = createApi({
         }),
       }
     ),
+    updateApplication: builder.mutation<
+      updateJobApplication,
+      {
+        application: updateJobApplication;
+        token: string;
+        applicationId: string;
+      }
+    >({
+      query: ({ application, token, applicationId }) => {
+        console.log("applicationId:", applicationId); // Debugging step
+        return {
+          url: `applications/${applicationId}`,
+          method: "PATCH",
+          body: application,
+          headers: {
+            Authorization: token,
+          },
+        };
+      },
+      invalidatesTags: ["Applications"],
+    }),
   }),
 });
 
@@ -153,4 +175,5 @@ export const {
   useGetApplicationsEmployerQuery,
   useGetApplicationscountQuery,
   useGetApplicationsCategorycountQuery,
+  useUpdateApplicationMutation,
 } = applicationsApi;

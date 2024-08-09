@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { EmployerApplications, JobApplication } from "@/lib/types/Application";
 import { Download } from "lucide-react";
+import EmployerApplicationUpdate from "./EmployerApplicationUpdate";
 
 // const changestatus = (value) => {
 //   console.log(value);
@@ -148,5 +149,20 @@ export const columns: ColumnDef<EmployerApplications>[] = [
       );
     },
   },
+  {
+    accessorKey: "id",
+    header: () => <div className="text-center">update application</div>,
+    cell: ({ row }) => {
+      return (
+        <div className=" flex justify-center w-full">
+          <EmployerApplicationUpdate
+            update={row.getValue("status")}
+            applicationId={row.original.id}
+          />
+        </div>
+      );
+    },
+  },
+
   //
 ];

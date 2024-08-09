@@ -9,6 +9,8 @@ import { JobsModule } from './jobs/jobs.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { MediaModule } from './media/media.module';
+import { EventsGateway } from './events/events.gateway';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -20,9 +22,10 @@ import { MediaModule } from './media/media.module';
     ApplicationsModule,
     ProfilesModule,
     MediaModule,
+    EventsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

@@ -14,7 +14,9 @@ import store, { RootState, AppDispatch } from "@/lib/redux/applyjobs/store";
 import { JobApplication } from "@/lib/types/Application";
 
 const Applicationsdata: React.FC = () => {
-  const applications = useSelector<RootState, JobApplication[]>((state) => state.application.items);
+  const applications = useSelector<RootState, JobApplication[]>(
+    (state) => state.application.items
+  );
   const authctx = useContext(AuthContext);
   const dispatch = useDispatch<AppDispatch>();
 

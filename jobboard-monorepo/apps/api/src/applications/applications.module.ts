@@ -5,9 +5,15 @@ import { AuthModule } from '../auth/auth.module';
 import { JobsModule } from '../jobs/jobs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Application } from './entities/application.entity';
+import { EventsModule } from '../events/events.module';
 
 @Module({
-  imports: [AuthModule, JobsModule, TypeOrmModule.forFeature([Application])],
+  imports: [
+    AuthModule,
+    EventsModule,
+    JobsModule,
+    TypeOrmModule.forFeature([Application]),
+  ],
   controllers: [ApplicationsController],
   providers: [ApplicationsService],
 })

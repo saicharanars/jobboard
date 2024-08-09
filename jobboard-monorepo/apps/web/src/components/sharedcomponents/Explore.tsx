@@ -11,9 +11,16 @@ import {
 } from "lucide-react";
 import Heading from "./Heading";
 import Categorycard from "./Categorycad";
+import Link from "next/link";
+import { ReactNode } from "react";
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+interface CategoryItem {
+  icon: string | ReactNode;
+  text: string;
+}
 
 const Explore = () => {
-  const data = [
+  const data: CategoryItem[] = [
     {
       icon: <Frame />,
       text: "Design",
@@ -229,7 +236,12 @@ const Explore = () => {
                 item,
                 index // Added index parameter for React's requirement
               ) => (
-                <Categorycard key={index} icon={item.icon} text={item.text} /> // Added key prop for React
+                <Link
+                  key={index}
+                  href={`/jobs?sortdate=ASC&category=${encodeURIComponent(item.text || "")}&skip=0&take=10`}
+                >
+                  <Categorycard icon={item.icon} text={item.text} />
+                </Link>
               )
             )}
           </div>
