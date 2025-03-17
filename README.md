@@ -164,7 +164,7 @@ This project is actively maintained. If you encounter any issues or have suggest
 
 ## 💡 Screenshots
 
-![alt text](assets/jobboard.png "jobhuntly  app")
+![alt text](jobboard-monorepo/assets/jobboard.png "jobhuntly  app")
 
 
 Developed with ❤️ by Sai Charan Arishanapally 
